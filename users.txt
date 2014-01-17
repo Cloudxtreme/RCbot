@@ -1,4 +1,5 @@
-LaunchCode
+#Enter "known" users below for use in the greeter portion of the social plugin
+RCbot
+RCbotBeta
 LCbot
-LaunchCode
-LCbot1
+RecursiveChaos
