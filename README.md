@@ -1,4 +1,4 @@
-LCbot
+RCbot
 =====
 
-LCbot is an IRC chat bot for the #LaunchCode room on freenode, written in Java
+RCbot is an implementation of pircbotx, focused on modularity. Written in java, it is designed to be used in a variety of different chatrooms in IRC.
