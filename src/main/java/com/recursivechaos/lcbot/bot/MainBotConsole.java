@@ -43,7 +43,7 @@ public class MainBotConsole {
 				.addListener(new SocialPluginListener())
 				.addListener(new UrlAnnouncePluginListener())
 				.setServerHostname("chat.freenode.org")
-				.addAutoJoinChannel("#LaunchCode").buildConfiguration();
+				.addAutoJoinChannel("#StoopTest").buildConfiguration();
 		logger.info("Configuration loaded.");
 		// Start bot
 		try {

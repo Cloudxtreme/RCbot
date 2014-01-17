@@ -32,7 +32,7 @@ public class SocialPluginListener extends ListenerAdapter {
 		logger.info(event.getUser().getNick() + " joined the channel.");
 		// If not the bot, welcomes new user.
 		// TODO: Add list of 'known' users
-		if (isNewUser(event)) {
+		if (!isExistingUser(event)) {
 			event.respond("Welcome to the unofficial LaunchCode  IRC channel. "
 					+ "This is a new channel, and we're still trying to gain users."
 					+ " If you have a question, feel free to ask, and be sure to "
@@ -46,7 +46,7 @@ public class SocialPluginListener extends ListenerAdapter {
 	 * @return	true if new user
 	 * @throws Exception 
 	 */
-	private boolean isNewUser(JoinEvent event) {
+	private boolean isExistingUser(JoinEvent event) {
 		List<String> knownUsers;
 		try {
 			knownUsers = getUserList();
@@ -54,22 +54,24 @@ public class SocialPluginListener extends ListenerAdapter {
 			logger.error("Unable to load userlist. " + e.getMessage());
 			return false;
 		}
-		boolean newUser = false;
+		boolean existingUser = false;
 		String username = event.getUser().getNick();
 		for (String u : knownUsers) {
 			if (event.getUser().getNick().equalsIgnoreCase(u)) {
 				logger.info("Known user: " + username);
-			} else {
-				logger.info("New user: " + username);
-				newUser = true;
-				try {
-					addKnownUser(username);
-				} catch (IOException e) {
-					logger.error("Unable to add to userlist. " +e.getMessage());
-				}
-			}
+				existingUser = true;
+			} 	
 		}
-		return newUser;
+		// New user
+		if (existingUser == false){
+			logger.info("New user: " + username);
+			try {
+				addKnownUser(username);
+			} catch (IOException e) {
+				logger.error("Unable to add to userlist. " +e.getMessage());
+			}	
+		}
+		return existingUser;
 	}
 
 	private List<String> getUserList() throws Exception{
