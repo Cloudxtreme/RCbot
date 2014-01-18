@@ -119,7 +119,7 @@ public class SocialPluginListener extends ListenerAdapter {
 			// Unique to LaunchCode channel
 			// TODO: Further abstract these sorts of one-off replies
 			if ((event.getChannel().toString().equals("#LaunchCode"))
-					|| (event.getChannel().toString().equals("#LaunchCode"))) {
+					|| (event.getChannel().toString().equals("#StoopTest"))) {
 				event.respond("Welcome to " + event.getChannel() + "This "
 						+ "is a new channel, and we're still trying to gain "
 						+ "users. If you have a question, feel free to ask, "
@@ -136,9 +136,11 @@ public class SocialPluginListener extends ListenerAdapter {
 		// If a user gets forced to a Guest* nickname, the bot will post a
 		// message letting them know what happened.
 		// TODO post in channel, no pm
-		event.respond("Welcome to IRC! You may have chosen a nickname that is "
-				+ "already taken. Type '/nick <new nickname>', without quotes "
-				+ "where <new nickname> is a different, unique nickname.");
+		if (event.getNewNick().contains("Guest")){
+			event.respond("Welcome to IRC! You may have chosen a nickname that is "
+					+ "already taken. Type '/nick <new nickname>', without quotes "
+					+ "where <new nickname> is a different, unique nickname.");
+		}
 		// event.getUser().getBot().sendIRC().message(event.getBot().getEnabledCapabilities()," ");
 	}
 }
