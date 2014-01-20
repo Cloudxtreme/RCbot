@@ -1,4 +1,4 @@
-#Enter "known" users below for use in the greeter portion of the social plugin
+#Enter "known" users below for use in the NewUserGreeting plugin
 RCbot
 RCbotBeta
 LCbot

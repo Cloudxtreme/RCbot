@@ -1,0 +1,13 @@
+#Configuration File. Adjust according to your implementation. Do not modify comments (that begin with #)
+#NICK
+LaunchBotBeta
+#PASSWORD
+password
+#SERVER
+chat.freenode.org
+#CHANNEL
+StoopTest
+#REDDITPREVIEW
+TRUE
+#NEWUSERGREETING
+TRUE

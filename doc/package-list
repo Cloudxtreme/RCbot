@@ -1,1 +1,4 @@
 com.recursivechaos.rcbot.bot
+com.recursivechaos.rcbot.plugins.newUserGreetingPlugin
+com.recursivechaos.rcbot.plugins.redditPreview
+com.recursivechaos.rcbot.settings

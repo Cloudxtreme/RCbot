@@ -12,6 +12,8 @@ public class Settings {
 	String server = "";
 	String channel = "";
 	String admin = "";
+	Boolean redditPreview = false;
+	Boolean newUserGreeting = false;
 
 	public Settings() {
 	}
@@ -32,12 +34,20 @@ public class Settings {
 		return channel;
 	}
 
+	public Boolean getNewUserGreeting() {
+		return newUserGreeting;
+	}
+
 	public String getNick() {
 		return nick;
 	}
 
 	public String getPassword() {
 		return password;
+	}
+
+	public Boolean getRedditPreview() {
+		return redditPreview;
 	}
 
 	public String getServer() {
@@ -52,12 +62,20 @@ public class Settings {
 		this.channel = channel;
 	}
 
+	public void setNewUserGreeting(Boolean newUserGreeting) {
+		this.newUserGreeting = newUserGreeting;
+	}
+
 	public void setNick(String nick) {
 		this.nick = nick;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setRedditPreview(Boolean redditPreview) {
+		this.redditPreview = redditPreview;
 	}
 
 	public void setServer(String server) {
