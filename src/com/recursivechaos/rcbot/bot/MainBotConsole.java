@@ -1,11 +1,9 @@
 package com.recursivechaos.rcbot.bot;
-
 /**
  * MainBotConsole creates a configuration factory, gets the Configuration
  * object, and creates a bot object with it.
  * 
  * @author Andrew Bell
- *
  */
 import java.io.IOException;
 

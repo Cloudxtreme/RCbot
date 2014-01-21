@@ -1,11 +1,9 @@
 package com.recursivechaos.rcbot.plugins.newUserGreetingPlugin;
-
 /**
  * NewUserGreetingListener will greet any new (to the bot) users with a welcome
  * message, and then adds them to a list of known users.
  * 
  * @author Andrew Bell
- *
  */
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -116,7 +114,8 @@ public class NewUserGreetingListener extends ListenerAdapter {
 		// If not an existing user, welcomes new user.
 		if (!isExistingUser(event)) {
 			// TODO: get reply from configuration file
-			event.respond("Welcome to " + event.getChannel().getName().toString() + " This "
+			event.respond("Welcome to "
+					+ event.getChannel().getName().toString() + " This "
 					+ "is a new channel, and we're still trying to gain "
 					+ "users. If you have a question, feel free to ask, "
 					+ "and be sure to come back soon!");

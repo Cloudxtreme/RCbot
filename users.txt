@@ -3,3 +3,4 @@ RCbot
 RCbotBeta
 LCbot
 RecursiveChaos
+LaunchBotBeta

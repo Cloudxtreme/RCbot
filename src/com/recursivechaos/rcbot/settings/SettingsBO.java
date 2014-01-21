@@ -1,5 +1,9 @@
 package com.recursivechaos.rcbot.settings;
-
+/**
+ * SettingsBO handles global settings for the bot.
+ * 
+ * @author Andrew Bell
+ */
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -8,12 +12,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * SettingsBO handles global settings for the bot.
- * 
- * @author Andrew Bell
- * 
- */
 public class SettingsBO extends Settings {
 	// Start logger
 	Logger logger = LoggerFactory.getLogger(SettingsBO.class);
@@ -57,7 +55,24 @@ public class SettingsBO extends Settings {
 				break;
 			case ("#NEWUSERGREETING"):
 				this.setNewUserGreeting(Boolean.valueOf(settingsList.get(i + 1)));
+				break;
+			case ("#CALENDAR"):
+				this.setCalendar(Boolean.valueOf(settingsList.get(i + 1)));
+				break;
+			case ("#CALENDARURL"):
+				this.setCalendarUrl(settingsList.get(i + 1));
+				break;
+			case ("#DICE"):
+				this.setDice(Boolean.valueOf(settingsList.get(i + 1)));
+				break;
+			case ("#CATFACTS"):
+				this.setCatfacts(Boolean.valueOf(settingsList.get(i + 1)));
+				break;
+			case ("#DADJOKES"):
+				this.setDadjokes(Boolean.valueOf(settingsList.get(i + 1)));
+				break;
 			}
+
 		}
 	}
 

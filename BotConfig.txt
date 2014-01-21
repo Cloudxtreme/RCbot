@@ -11,3 +11,13 @@ StoopTest
 TRUE
 #NEWUSERGREETING
 TRUE
+#CALENDAR
+TRUE
+#CALENDARURL
+https://www.google.com/calendar/feeds/redditstlouis%40gmail.com/public/full
+#DICE
+TRUE
+#CATFACTS
+TRUE
+#DADJOKES
+TRUE

@@ -1,10 +1,8 @@
 package com.recursivechaos.rcbot.settings;
-
 /**
  * Settings is the object representing global bot settings.
  * 
  * @author Andrew Bell
- * 
  */
 public class Settings {
 	String nick = "";
@@ -12,8 +10,13 @@ public class Settings {
 	String server = "";
 	String channel = "";
 	String admin = "";
+	String calendarUrl = "";
 	Boolean redditPreview = false;
 	Boolean newUserGreeting = false;
+	Boolean calendar = false;
+	Boolean dice = false;
+	Boolean catfacts = false;
+	Boolean dadjokes = false;
 
 	public Settings() {
 	}
@@ -30,8 +33,28 @@ public class Settings {
 		return admin;
 	}
 
+	public Boolean getCalendar() {
+		return calendar;
+	}
+
+	public String getCalendarUrl() {
+		return calendarUrl;
+	}
+
+	public Boolean getCatfacts() {
+		return catfacts;
+	}
+
 	public String getChannel() {
 		return channel;
+	}
+
+	public Boolean getDadjokes() {
+		return dadjokes;
+	}
+
+	public Boolean getDice() {
+		return dice;
 	}
 
 	public Boolean getNewUserGreeting() {
@@ -58,8 +81,28 @@ public class Settings {
 		this.admin = admin;
 	}
 
+	public void setCalendar(Boolean calendar) {
+		this.calendar = calendar;
+	}
+
+	public void setCalendarUrl(String calendarUrl) {
+		this.calendarUrl = calendarUrl;
+	}
+
+	public void setCatfacts(Boolean catfacts) {
+		this.catfacts = catfacts;
+	}
+
 	public void setChannel(String channel) {
 		this.channel = channel;
+	}
+
+	public void setDadjokes(Boolean dadjokes) {
+		this.dadjokes = dadjokes;
+	}
+
+	public void setDice(Boolean dice) {
+		this.dice = dice;
 	}
 
 	public void setNewUserGreeting(Boolean newUserGreeting) {
