@@ -30,8 +30,9 @@ public class MainBotConsole {
 		// Create bot and connect
 		PircBotX bot = new PircBotX(configuration);
 		try {
+			logger.info("Starting bot.");
 			bot.startBot();
-			logger.info("Bot Started.");
+			logger.info("Bot Stopped.");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("IOException: " + e.getMessage());

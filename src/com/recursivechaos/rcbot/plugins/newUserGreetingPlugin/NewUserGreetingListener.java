@@ -116,7 +116,7 @@ public class NewUserGreetingListener extends ListenerAdapter {
 		// If not an existing user, welcomes new user.
 		if (!isExistingUser(event)) {
 			// TODO: get reply from configuration file
-			event.respond("Welcome to " + event.getChannel() + "This "
+			event.respond("Welcome to " + event.getChannel().getName().toString() + " This "
 					+ "is a new channel, and we're still trying to gain "
 					+ "users. If you have a question, feel free to ask, "
 					+ "and be sure to come back soon!");
