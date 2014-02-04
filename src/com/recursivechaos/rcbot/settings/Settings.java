@@ -17,6 +17,7 @@ public class Settings {
 	Boolean dice = false;
 	Boolean catfacts = false;
 	Boolean dadjokes = false;
+	int dadjokeChance = 0;
 
 	public Settings() {
 	}
@@ -124,4 +125,14 @@ public class Settings {
 	public void setServer(String server) {
 		this.server = server;
 	}
+
+	public int getDadjokeChance() {
+		return dadjokeChance;
+	}
+
+	public void setDadjokeChance(int dadjokeChance) {
+		this.dadjokeChance = dadjokeChance;
+	}
+
+
 }

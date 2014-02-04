@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+	<bot>
+		<nick>rcbot1</nick>
+		<password>password1</password>
+		<server>chat.freenode.org</server>
+		<channel>#StoopTest</channel>
+		<redditpreview>true</redditpreview>
+		<newusergreeting>true</newusergreeting>
+		<calendar>true</calendar>
+		<calendarurl>https://www.google.com/calendar/feeds/redditstlouis%40gmail.com/public/full</calendarurl>
+		<dice>true</dice>
+		<catfacts>true</catfacts>
+		<dadjokes>true</dadjokes>
+		<dadjokechance>5</dadjokechance>
+	</bot>
+	<bot>
+		<nick>rcbot2</nick>
+		<password>password1</password>
+		<server>chat.freenode.org</server>
+		<channel>#StoopTest</channel>
+		<redditpreview>true</redditpreview>
+		<newusergreeting>true</newusergreeting>
+		<calendar>true</calendar>
+		<calendarurl>https://www.google.com/calendar/feeds/redditstlouis%40gmail.com/public/full</calendarurl>
+		<dice>true</dice>
+		<catfacts>true</catfacts>
+		<dadjokes>true</dadjokes>
+		<dadjokechance>5</dadjokechance>
+	</bot>
+</config>

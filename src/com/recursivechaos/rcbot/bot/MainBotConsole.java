@@ -5,38 +5,35 @@ package com.recursivechaos.rcbot.bot;
  * 
  * @author Andrew Bell
  */
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.pircbotx.Configuration;
-import org.pircbotx.PircBotX;
-import org.pircbotx.exception.IrcException;
+import org.pircbotx.MultiBotManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
+
 public class MainBotConsole {
 
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		// Start logger
 		Logger logger = LoggerFactory.getLogger(MainBotConsole.class);
-		// Create config factory
+		// Create configuration factory
 		ConfigFactory myConfigFactory = new ConfigFactory();
 		logger.info("Created myConfigFactory");
-		// Build configuration from factory
-		Configuration<PircBotX> configuration = myConfigFactory.getConfig();
-		logger.info("configuration loaded from myConfigFactory");
-		// Create bot and connect
-		PircBotX bot = new PircBotX(configuration);
-		try {
-			logger.info("Starting bot.");
-			bot.startBot();
-			logger.info("Bot Stopped.");
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error("IOException: " + e.getMessage());
-		} catch (IrcException e) {
-			e.printStackTrace();
-			logger.error("IrcException: " + e.getMessage());
-		}
+		// Load bot array from file
+		List<MyPircBotX> botList = new ArrayList<>();
+		botList = myConfigFactory.loadBotsFromXML();
+		// Create multibot manager
+		MultiBotManager<MyPircBotX> botManager = new MultiBotManager<MyPircBotX>();
+		Iterator<MyPircBotX> itr = botList.iterator();
+	      while(itr.hasNext()) {
+	    	  MyPircBotX thisBot = (MyPircBotX) itr.next();
+	    	  botManager.addBot(thisBot);
+	      }
+		// Start botManager
+	    botManager.start();
 	}
 }

@@ -20,27 +20,29 @@ import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarEventFeed;
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.settings.SettingsBO;
 
-public class CalendarListener extends ListenerAdapter<PircBotX> {
+public class CalendarListener extends ListenerAdapter<MyPircBotX> {
 	SettingsBO settings = new SettingsBO();
 	Logger logger = LoggerFactory.getLogger(CalendarListener.class);
 
-	public CalendarListener(SettingsBO mySettings) {
-		this.settings = mySettings;
-	}
+//	public CalendarListener(SettingsBO mySettings) {
+//		this.settings = mySettings;
+//	}
 	/**
 	 * Gets the 5 upcoming events from a calendar
+	 * @param event 
 	 * @return List<String> of the headlines for the events
 	 * @throws Exception
 	 */
-	public List<String> getMeetupTicker() throws Exception {
+	public List<String> getMeetupTicker(MessageEvent<MyPircBotX> event) throws Exception {
 		List<String> meetupList = new ArrayList<>();
 		// Set up the URL and the object that will handle the connection:
 		// Update this to reflect your Domain-App-#
 		CalendarService myService = new CalendarService(
 				"RecursiveChaos-RC_BOT-1");
-		URL feedUrl = new URL(settings.getCalendarUrl());
+		URL feedUrl = new URL(event.getBot().getSettings().getCalendarUrl());
 		CalendarQuery query = new CalendarQuery(feedUrl);
 		// Resolve Recurring Events to single events
 		query.setStringCustomParameter("singleevents", "true");
@@ -93,12 +95,12 @@ public class CalendarListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onMessage(final MessageEvent<PircBotX> event) {
+	public void onMessage(final MessageEvent<MyPircBotX> event) {
 		String msg = event.getMessage().toLowerCase();
 		// Responds to both '!meetup' and '!event'
 		if ((msg.startsWith("!meetup")) || (msg.startsWith("!event"))) {
 			try {
-				List<String> events = getMeetupTicker();
+				List<String> events = getMeetupTicker(event);
 				event.getBot()
 						.sendIRC()
 						.message(event.getChannel().getName().toString(),
