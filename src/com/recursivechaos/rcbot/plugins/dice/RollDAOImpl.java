@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.dice;
+
 /**
  * RollDAOImpl accepts a string dice roll, and returns the rolled value.
  * For example, 1D6 will return an int between 1 and 6,

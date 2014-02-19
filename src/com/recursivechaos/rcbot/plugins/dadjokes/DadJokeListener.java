@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.dadjokes;
+
 /**
  * DadJokeListener parses text for the word "I'm" in order to make a "dad joke"
  * from the user's text.
@@ -19,7 +20,7 @@ public class DadJokeListener extends ListenerAdapter<PircBotX> {
 	@Override
 	public void onMessage(final MessageEvent<PircBotX> event) {
 		String message = event.getMessage();
-		//TODO: Make this a dynamic value, or at least modifiable.
+		// TODO: Make this a dynamic value, or at least modifiable.
 		int DAD_JOKE_CHANCE = 5;
 		try {
 			Random generator = new Random();

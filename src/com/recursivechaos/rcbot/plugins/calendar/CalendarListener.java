@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.calendar;
+
 /**
  * CalendarListener will fetch the next event from a calendar URL and post
  * it to the channel. 
@@ -10,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
@@ -27,16 +27,18 @@ public class CalendarListener extends ListenerAdapter<MyPircBotX> {
 	SettingsBO settings = new SettingsBO();
 	Logger logger = LoggerFactory.getLogger(CalendarListener.class);
 
-//	public CalendarListener(SettingsBO mySettings) {
-//		this.settings = mySettings;
-//	}
+	// public CalendarListener(SettingsBO mySettings) {
+	// this.settings = mySettings;
+	// }
 	/**
 	 * Gets the 5 upcoming events from a calendar
-	 * @param event 
+	 * 
+	 * @param event
 	 * @return List<String> of the headlines for the events
 	 * @throws Exception
 	 */
-	public List<String> getMeetupTicker(MessageEvent<MyPircBotX> event) throws Exception {
+	public List<String> getMeetupTicker(MessageEvent<MyPircBotX> event)
+			throws Exception {
 		List<String> meetupList = new ArrayList<>();
 		// Set up the URL and the object that will handle the connection:
 		// Update this to reflect your Domain-App-#

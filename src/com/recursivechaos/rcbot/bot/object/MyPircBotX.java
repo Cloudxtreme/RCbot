@@ -5,17 +5,17 @@ import org.pircbotx.PircBotX;
 
 import com.recursivechaos.rcbot.settings.Settings;
 
-public class MyPircBotX extends PircBotX{
+public class MyPircBotX extends PircBotX {
 	Settings mySettings;
 
-	public MyPircBotX(Configuration<? extends PircBotX> configuration, Settings mySettings) {
+	public MyPircBotX(Configuration<? extends PircBotX> configuration,
+			Settings mySettings) {
 		super(configuration);
 		this.mySettings = mySettings;
 	}
-	
-	public Settings getSettings(){
+
+	public Settings getSettings() {
 		return mySettings;
 	}
-	
 
 }

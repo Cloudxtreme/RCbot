@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.catfacts;
+
 /**
  * CatFactListener returns a random catfact on the !catfact command. Reads from
  * the catfacts.txt file in the root of the project. Could be easily added to

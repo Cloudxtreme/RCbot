@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.dice;
+
 /**
  * @author Andrew Bell
  */

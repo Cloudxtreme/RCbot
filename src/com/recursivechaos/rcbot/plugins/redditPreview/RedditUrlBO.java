@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.redditPreview;
+
 /**
  * RedditUrlBO handles all reddit url translations using JSON
  * 

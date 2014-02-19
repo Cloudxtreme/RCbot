@@ -1,9 +1,13 @@
 package com.recursivechaos.rcbot.settings;
+
+import javax.persistence.Entity;
+
 /**
  * Settings is the object representing global bot settings.
  * 
  * @author Andrew Bell
  */
+@Entity
 public class Settings {
 	String nick = "";
 	String password = "";
@@ -18,6 +22,7 @@ public class Settings {
 	Boolean catfacts = false;
 	Boolean dadjokes = false;
 	int dadjokeChance = 0;
+	Boolean logger = false;
 
 	public Settings() {
 	}
@@ -50,12 +55,20 @@ public class Settings {
 		return channel;
 	}
 
+	public int getDadjokeChance() {
+		return dadjokeChance;
+	}
+
 	public Boolean getDadjokes() {
 		return dadjokes;
 	}
 
 	public Boolean getDice() {
 		return dice;
+	}
+
+	public Boolean getLogger() {
+		return logger;
 	}
 
 	public Boolean getNewUserGreeting() {
@@ -98,12 +111,20 @@ public class Settings {
 		this.channel = channel;
 	}
 
+	public void setDadjokeChance(int dadjokeChance) {
+		this.dadjokeChance = dadjokeChance;
+	}
+
 	public void setDadjokes(Boolean dadjokes) {
 		this.dadjokes = dadjokes;
 	}
 
 	public void setDice(Boolean dice) {
 		this.dice = dice;
+	}
+
+	public void setLogger(Boolean logger) {
+		this.logger = logger;
 	}
 
 	public void setNewUserGreeting(Boolean newUserGreeting) {
@@ -125,14 +146,5 @@ public class Settings {
 	public void setServer(String server) {
 		this.server = server;
 	}
-
-	public int getDadjokeChance() {
-		return dadjokeChance;
-	}
-
-	public void setDadjokeChance(int dadjokeChance) {
-		this.dadjokeChance = dadjokeChance;
-	}
-
 
 }

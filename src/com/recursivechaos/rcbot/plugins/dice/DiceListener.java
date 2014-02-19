@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.dice;
+
 /**
  * DiceListener will roll dice when user types !roll (dice string). Dice should
  * be formated in a D&D style format, such as 12D10+5. User can add flavor text,

@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.settings;
+
 /**
  * SettingsBO handles global settings for the bot.
  * 

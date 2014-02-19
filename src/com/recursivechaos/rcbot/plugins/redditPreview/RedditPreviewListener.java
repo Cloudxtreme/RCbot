@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.redditPreview;
+
 /**
  * RedditPreviewListener will check messages for a valid reddit url, and
  * display a preview

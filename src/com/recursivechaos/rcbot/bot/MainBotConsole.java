@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.bot;
+
 /**
  * MainBotConsole creates a configuration factory, gets the Configuration
  * object, and creates a bot object with it.
@@ -29,11 +30,11 @@ public class MainBotConsole {
 		// Create multibot manager
 		MultiBotManager<MyPircBotX> botManager = new MultiBotManager<MyPircBotX>();
 		Iterator<MyPircBotX> itr = botList.iterator();
-	      while(itr.hasNext()) {
-	    	  MyPircBotX thisBot = (MyPircBotX) itr.next();
-	    	  botManager.addBot(thisBot);
-	      }
+		while (itr.hasNext()) {
+			MyPircBotX thisBot = itr.next();
+			botManager.addBot(thisBot);
+		}
 		// Start botManager
-	    botManager.start();
+		botManager.start();
 	}
 }
