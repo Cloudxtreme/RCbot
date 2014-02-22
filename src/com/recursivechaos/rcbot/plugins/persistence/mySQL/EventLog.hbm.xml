@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 16, 2014 8:44:40 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.recursivechaos.rcbot.plugins.persistance.EventLog" table="EVENT_LOG">
+    <class name="com.recursivechaos.rcbot.plugins.persistence.EventLog" table="EVENT_LOG">
         <id name="eventID" type="int">
             <column name="EVENT_ID" />
             <generator class="assigned" />

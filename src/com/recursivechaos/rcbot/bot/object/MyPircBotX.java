@@ -1,5 +1,10 @@
 package com.recursivechaos.rcbot.bot.object;
 
+/**
+ * MyPircBotX is a custom PircBotX with a settings object attached to it.
+ * 
+ * @author Andrew Bell
+ */
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 
@@ -16,6 +21,10 @@ public class MyPircBotX extends PircBotX {
 
 	public Settings getSettings() {
 		return mySettings;
+	}
+	
+	public MyPircBotX getBot(){
+		return this;
 	}
 
 }

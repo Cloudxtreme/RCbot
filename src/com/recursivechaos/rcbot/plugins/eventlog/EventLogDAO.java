@@ -1,4 +1,5 @@
 package com.recursivechaos.rcbot.plugins.eventlog;
+
 /**
  * EventLogDAO defines the functions required for eventlog. Impl files should be
  * placed in rcbot.plugins.persistance.*

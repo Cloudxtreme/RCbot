@@ -1,4 +1,5 @@
-package com.recursivechaos.rcbot.plugins.persistance;
+package com.recursivechaos.rcbot.plugins.persistence;
+
 /**
  * EventLog holds all fields from a bot event
  * 
@@ -14,8 +15,9 @@ import javax.persistence.Id;
 @Entity
 public class EventLog {
 	public enum TYPE {
-		MESSAGE,ACTION
+		MESSAGE, ACTION, PING
 	}
+
 	@Id
 	@GeneratedValue
 	int eventID;

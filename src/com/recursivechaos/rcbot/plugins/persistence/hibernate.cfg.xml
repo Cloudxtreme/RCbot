@@ -5,15 +5,15 @@
 <hibernate-configuration>
 	<session-factory>
         <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
-        <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.url">jdbc:mysql://rcbot_db</property>
-        <property name="hibernate.connection.username"></property>
+        <property name="hibernate.connection.password">Program!</property>
+        <property name="hibernate.connection.url">jdbc:mysql://box880.bluehost.com/recursi3_rcbot_db</property>
+        <property name="hibernate.connection.username">recursi3_botuser</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
     	<!-- Show SQL Queries for debugging -->
     	<property name="show_sql">true</property>
       	<!-- Drop and re-create the database schema on startup -->
    		<property name="hbm2ddl.auto">update</property>
    		<!-- List of XML mapping files -->
-   		<mapping resource="com/recursivechaos/rcbot/plugins/persistance/mySQL/EventLog.hbm.xml"/>
+   		<mapping resource="com/recursivechaos/rcbot/plugins/persistence/mySQL/EventLog.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

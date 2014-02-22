@@ -1,5 +1,10 @@
 package com.recursivechaos.rcbot.bot.object;
 
+/**
+ * MainConfigBO handles reading the configuration file, and creating a Settings list
+ * 
+ * @author Andrew Bell
+ */
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

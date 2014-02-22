@@ -1,4 +1,5 @@
-package com.recursivechaos.rcbot.plugins.persistance;
+package com.recursivechaos.rcbot.plugins.persistence;
+
 /**
  * DAO
  * Handles most of the generic hibernate calls
@@ -19,7 +20,9 @@ public class DAO {
 	private static final ThreadLocal session = new ThreadLocal();
 	@SuppressWarnings("deprecation")
 	private static final SessionFactory sessionFactory = new Configuration()
-			.configure("/com/recursivechaos/rcbot/plugins/persistance/hibernate.cfg.xml").buildSessionFactory();
+			.configure(
+					"/com/recursivechaos/rcbot/plugins/persistence/hibernate.cfg.xml")
+			.buildSessionFactory();
 
 	/**
 	 * closes current hibernate session

@@ -1,12 +1,12 @@
 package com.recursivechaos.rcbot.settings;
 
-import javax.persistence.Entity;
-
 /**
  * Settings is the object representing global bot settings.
  * 
  * @author Andrew Bell
  */
+import javax.persistence.Entity;
+
 @Entity
 public class Settings {
 	String nick = "";
