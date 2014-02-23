@@ -96,6 +96,50 @@ public class RoverRover {
 			
 	}
 	
+	public boolean goBackward() {
+		
+		int xTarget = this.xpos;
+		int yTarget = this.ypos;
+		
+		switch(this.heading) {
+		
+			case 0:
+			case 7:
+			case 1:
+				yTarget++;
+				break;
+				
+			case 3:
+			case 4:
+			case 5: 
+				yTarget--;
+				break;
+		}
+		
+		switch(this.heading) {
+			case 1:
+			case 2:
+			case 3:
+				xTarget--;
+				break;
+				
+			case 5:
+			case 6:
+			case 7:
+				xTarget++;
+				break;
+		}
+		
+		RoverRoom room = RoverRoom.getRoom(xTarget, yTarget);
+		
+		if (room != null) {
+			return true;
+		} else {
+			return false;
+		}
+			
+	}
+	
 	public String getHeading() {
 		
 		switch(this.heading) {

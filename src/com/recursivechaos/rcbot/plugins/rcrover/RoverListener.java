@@ -33,7 +33,10 @@ public class RoverListener extends ListenerAdapter<PircBotX> {
 				}
 				
 			} else if (event.getMessage().contains("backward")) {
-				
+				boolean result = this.roverWorld.rover.goBackward();
+				if(!result) {
+					event.respond("Sorry boss, can't do that.");
+				}
 			}
 			
 	
