@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
 	<bot>
-		<nick>rcbot1</nick>
+		<nick>soupybot</nick>
 		<password>password1</password>
 		<server>chat.freenode.org</server>
 		<channel>#StoopTest</channel>
@@ -14,7 +14,7 @@
 		<dadjokes>true</dadjokes>
 		<dadjokechance>5</dadjokechance>
 	</bot>
-	<bot>
+	<!--  <bot>
 		<nick>rcbot2</nick>
 		<password>password1</password>
 		<server>chat.freenode.org</server>
@@ -27,5 +27,5 @@
 		<catfacts>true</catfacts>
 		<dadjokes>true</dadjokes>
 		<dadjokechance>5</dadjokechance>
-	</bot>
+	</bot>-->
 </config>
