@@ -86,9 +86,13 @@ public class RoverRover {
 				break;
 		}
 		
+		RoverRoom room = RoverRoom.getRoom(xTarget, yTarget);
 		
-		
-		return true;
+		if (room != null) {
+			return true;
+		} else {
+			return false;
+		}
 			
 	}
 	

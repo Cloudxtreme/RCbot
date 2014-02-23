@@ -25,6 +25,19 @@ public class RoverListener extends ListenerAdapter<PircBotX> {
 	public void onMessage(final MessageEvent<PircBotX> event) {
 		// Call your game logic
 		if(event.getMessage().startsWith("!rover")){
+			
+			if(event.getMessage().contains("forward")) {
+				boolean result = this.roverWorld.rover.goForward();
+				if(!result) {
+					event.respond("Sorry boss, can't do that.");
+				}
+				
+			} else if (event.getMessage().contains("backward")) {
+				
+			}
+			
+	
+			
 			event.respond(this.roverWorld.rover.look());
 		}
 		
