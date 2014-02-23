@@ -23,6 +23,7 @@ public class Settings {
 	Boolean dadjokes = false;
 	int dadjokeChance = 0;
 	Boolean logger = false;
+	Boolean rcrover = false;
 
 	public Settings() {
 	}
@@ -145,6 +146,14 @@ public class Settings {
 
 	public void setServer(String server) {
 		this.server = server;
+	}
+
+	public Boolean getRcrover() {
+		return rcrover;
+	}
+
+	public void setRcrover(Boolean rcrover) {
+		this.rcrover = rcrover;
 	}
 
 }

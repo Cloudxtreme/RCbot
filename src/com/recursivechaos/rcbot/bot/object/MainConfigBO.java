@@ -51,6 +51,8 @@ public class MainConfigBO {
 						.getChildText("dadjokechance"))));
 				botSettings.setLogger(Boolean.valueOf((node
 						.getChildText("logger"))));
+				botSettings.setRcrover(Boolean.valueOf((node
+						.getChildText("rcrover"))));
 				settingsList.add(botSettings);
 			}
 		} catch (IOException io) {

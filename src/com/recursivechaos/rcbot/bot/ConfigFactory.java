@@ -24,6 +24,7 @@ import com.recursivechaos.rcbot.plugins.catfacts.CatFactListener;
 import com.recursivechaos.rcbot.plugins.dadjokes.DadJokeListener;
 import com.recursivechaos.rcbot.plugins.dice.DiceListener;
 import com.recursivechaos.rcbot.plugins.newUserGreetingPlugin.NewUserGreetingListener;
+import com.recursivechaos.rcbot.plugins.rcrover.RcroverListener;
 import com.recursivechaos.rcbot.plugins.redditPreview.RedditPreviewListener;
 import com.recursivechaos.rcbot.settings.Settings;
 
@@ -67,6 +68,9 @@ public class ConfigFactory {
 		}
 		if (mySettings.getDadjokes() == true) {
 			myBuilder.addListener(new DadJokeListener());
+		}
+		if (mySettings.getRcrover() == true) {
+			myBuilder.addListener(new RcroverListener());
 		}
 		// Build configuration and return
 		Configuration<PircBotX> myConfiguration = myBuilder

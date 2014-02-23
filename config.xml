@@ -5,14 +5,15 @@
 		<password>password1</password>
 		<server>chat.freenode.org</server>
 		<channel>#StoopTest</channel>
-		<redditpreview>true</redditpreview>
-		<newusergreeting>true</newusergreeting>
-		<calendar>true</calendar>
+		<redditpreview>false</redditpreview>
+		<newusergreeting>false</newusergreeting>
+		<calendar>false</calendar>
 		<calendarurl>https://www.google.com/calendar/feeds/redditstlouis%40gmail.com/public/full</calendarurl>
-		<dice>true</dice>
-		<catfacts>true</catfacts>
-		<dadjokes>true</dadjokes>
+		<dice>false</dice>
+		<catfacts>false</catfacts>
+		<dadjokes>false</dadjokes>
 		<dadjokechance>5</dadjokechance>
+		<rcrover>true</rcrover>
 	</bot>
 	<!--  <bot>
 		<nick>rcbot2</nick>
