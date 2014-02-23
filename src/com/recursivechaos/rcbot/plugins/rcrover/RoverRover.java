@@ -38,6 +38,13 @@ public class RoverRover {
 		
 	}
 	
+	public void moveTo(int xpos, int ypos) {
+		
+		this.xpos = xpos;
+		this.ypos = ypos;
+		
+	}
+	
 	public void turnLeft() {
 		
 		this.heading--;
@@ -47,7 +54,7 @@ public class RoverRover {
 
 	public void turnRight() {
 		
-		this.heading--;
+		this.heading++;
 		if(this.heading > 7) this.heading = 0;
 		
 	}
@@ -89,6 +96,7 @@ public class RoverRover {
 		RoverRoom room = RoverRoom.getRoom(xTarget, yTarget);
 		
 		if (room != null) {
+			this.moveTo(xTarget, yTarget);
 			return true;
 		} else {
 			return false;
@@ -133,6 +141,7 @@ public class RoverRover {
 		RoverRoom room = RoverRoom.getRoom(xTarget, yTarget);
 		
 		if (room != null) {
+			this.moveTo(xTarget, yTarget);
 			return true;
 		} else {
 			return false;
