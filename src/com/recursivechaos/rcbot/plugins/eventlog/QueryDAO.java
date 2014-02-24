@@ -1,6 +1,10 @@
 package com.recursivechaos.rcbot.plugins.eventlog;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+
+import com.recursivechaos.rcbot.plugins.persistence.EventLog;
 
 /**
  * QueryDAO provides a common interface for queries to the database.
@@ -33,4 +37,6 @@ public interface QueryDAO {
 	 * @return				integer of the total word count
 	 */
 	public int getWordCount(String searchTerm, String channel, Timestamp start, Timestamp end);
+	
+	public HashMap<String, Integer> getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end);
 }

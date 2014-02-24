@@ -1,6 +1,7 @@
 package com.recursivechaos.rcbot.plugins.persistence.mySQL;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -41,12 +42,21 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		c.add(Restrictions.eq("channel", channel));
 		// Restricts date
 		c.add(Restrictions.between("sqltimestamp", start, end));
-		// Technically, we're only returning the amount of messages that contain
-		// the word, not the total count of the word
 		// Fetch list
 		@SuppressWarnings("unchecked")
 		List<EventLog> records = c.list();
 		records = QueryBO.removeStartsWith(records, "!");
 		return QueryBO.wordCount(records, searchTerm);
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	public HashMap<String, Integer> getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end){
+		// create criteria
+		Criteria c = getSession().createCriteria(EventLog.class);
+		c.add(Restrictions.eq("channel", channel));
+		c.add(Restrictions.between("sqltimestamp", start, end));
+		HashMap<String, Integer> wordMap = QueryBO.getWordMap((List<EventLog>)c.list());
+		HashMap<String, Integer> topList = QueryBO.getTop(5,wordMap);
+		return topList;
 	}
 }

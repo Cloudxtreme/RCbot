@@ -7,6 +7,8 @@ package com.recursivechaos.rcbot.plugins.eventlog;
  * 
  */
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.pircbotx.PircBotX;
@@ -37,6 +39,19 @@ public class QueryListener extends ListenerAdapter<PircBotX> {
 			int count = query.getWordCount(event.getMessage().substring(5), event
 							.getChannel().getName(),yesterday,now);
 			event.respond("Daily Word Count (24 hrs): " + count);
+		}
+		if (event.getMessage().contains("!trending")){
+			QueryDAO query = new QueryDAOImpl();
+			Timestamp now = new Timestamp(event.getTimestamp());
+			Timestamp yesterday = new Timestamp(event.getTimestamp()-ONE_DAY);
+			HashMap<String,Integer> topWords = 
+					query.getTopWords(5, event.getChannel().getName(), yesterday, now);
+			String response = "Trending Words (24 Hours): ";
+			for (Entry<String, Integer> entry : topWords.entrySet()) {
+			    String block = (entry.getKey() + ":" + entry.getValue()+ " ");
+				response= response + block;
+			}
+			event.respond(response);
 		}
 	}
 
