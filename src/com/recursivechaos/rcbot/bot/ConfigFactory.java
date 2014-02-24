@@ -19,10 +19,13 @@ import org.slf4j.LoggerFactory;
 
 import com.recursivechaos.rcbot.bot.object.MainConfigBO;
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
+import com.recursivechaos.rcbot.plugins.admin.AdminListener;
 import com.recursivechaos.rcbot.plugins.calendar.CalendarListener;
 import com.recursivechaos.rcbot.plugins.catfacts.CatFactListener;
 import com.recursivechaos.rcbot.plugins.dadjokes.DadJokeListener;
 import com.recursivechaos.rcbot.plugins.dice.DiceListener;
+import com.recursivechaos.rcbot.plugins.eventlog.LogListener;
+import com.recursivechaos.rcbot.plugins.eventlog.QueryListener;
 import com.recursivechaos.rcbot.plugins.newUserGreetingPlugin.NewUserGreetingListener;
 import com.recursivechaos.rcbot.plugins.rcrover.RoverListener;
 import com.recursivechaos.rcbot.plugins.redditPreview.RedditPreviewListener;
@@ -51,6 +54,7 @@ public class ConfigFactory {
 				.addAutoJoinChannel(mySettings.getChannel())
 				.setNickservPassword(mySettings.getPassword());
 		// Add necessary listeners
+		myBuilder.addListener(new AdminListener());
 		if (mySettings.getRedditPreview() == true) {
 			myBuilder.addListener(new RedditPreviewListener());
 		}
@@ -69,7 +73,11 @@ public class ConfigFactory {
 		if (mySettings.getDadjokes() == true) {
 			myBuilder.addListener(new DadJokeListener());
 		}
-		if (mySettings.getRcrover() == true) {
+		if (mySettings.getLogger() == true) {
+			myBuilder.addListener(new LogListener());
+			myBuilder.addListener(new QueryListener());
+		}
+		if (mySettings.getRcrover() == true){
 			myBuilder.addListener(new RoverListener());
 		}
 		// Build configuration and return

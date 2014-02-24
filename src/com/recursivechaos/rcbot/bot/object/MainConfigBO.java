@@ -51,6 +51,7 @@ public class MainConfigBO {
 						.getChildText("dadjokechance"))));
 				botSettings.setLogger(Boolean.valueOf((node
 						.getChildText("logger"))));
+				botSettings.setAdmin(node.getChildText("admin"));
 				botSettings.setRcrover(Boolean.valueOf((node
 						.getChildText("rcrover"))));
 				settingsList.add(botSettings);

@@ -8,20 +8,21 @@ package com.recursivechaos.rcbot.plugins.dadjokes;
  */
 import java.util.Random;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DadJokeListener extends ListenerAdapter<PircBotX> {
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
+
+public class DadJokeListener extends ListenerAdapter<MyPircBotX> {
 	Logger logger = LoggerFactory.getLogger(DadJokeListener.class);
-
+	// TODO: Make this a dynamic value, or at least modifiable.
+	int DAD_JOKE_CHANCE = 10; 
+	
 	@Override
-	public void onMessage(final MessageEvent<PircBotX> event) {
-
-		// TODO: Make this a dynamic value, or at least modifiable.
-		int DAD_JOKE_CHANCE = 1;
+	public void onMessage(final MessageEvent<MyPircBotX> event) {
+		DAD_JOKE_CHANCE = event.getBot().getSettings().getDadjokeChance();
 		try {
 			Random generator = new Random();
 			if (DAD_JOKE_CHANCE > 0) {

@@ -1,6 +1,3 @@
 #Enter "known" users below for use in the NewUserGreeting plugin
 RCbot
-RCbotBeta
-LCbot
 RecursiveChaos
-LaunchBotBeta

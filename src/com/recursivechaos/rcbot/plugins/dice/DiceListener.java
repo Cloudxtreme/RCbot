@@ -1,7 +1,7 @@
 package com.recursivechaos.rcbot.plugins.dice;
 
 /**
- * RcroverListener will roll dice when user types !roll (dice string). Dice should
+ * DiceListener will roll dice when user types !roll (dice string). Dice should
  * be formated in a D&D style format, such as 12D10+5. User can add flavor text,
  * such as !roll 2D10 to hit, and the bot will add the "to hit" to the end of 
  * the response.
