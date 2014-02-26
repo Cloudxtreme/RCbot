@@ -3,7 +3,7 @@ package com.recursivechaos.rcbot.plugins.redditPreview;
 /**
  * RedditUrlBO handles all reddit url translations using JSON
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.io.BufferedReader;
 import java.io.IOException;

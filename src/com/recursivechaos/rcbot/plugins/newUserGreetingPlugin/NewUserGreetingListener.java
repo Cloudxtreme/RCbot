@@ -4,7 +4,7 @@ package com.recursivechaos.rcbot.plugins.newUserGreetingPlugin;
  * NewUserGreetingListener will greet any new (to the bot) users with a welcome
  * message, and then adds them to a list of known users.
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

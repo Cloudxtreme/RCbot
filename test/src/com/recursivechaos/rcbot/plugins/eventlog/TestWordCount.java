@@ -7,7 +7,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.recursivechaos.rcbot.plugins.persistence.mySQL.QueryDAOImpl;
+import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.QueryDAOImpl;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryDAO;
 
 /**
  * @author andrew

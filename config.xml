@@ -5,17 +5,17 @@
 		<password>pw</password>
 		<server>chat.freenode.org</server>
 		<channel>#StoopTest</channel>
-		<redditpreview>true</redditpreview>
-		<newusergreeting>true</newusergreeting>
-		<calendar>true</calendar>
+		<redditpreview>false</redditpreview>
+		<newusergreeting>false</newusergreeting>
+		<calendar>false</calendar>
 		<calendarurl>https://www.google.com/calendar/feeds/redditstlouis%40gmail.com/public/full</calendarurl>
-		<dice>true</dice>
-		<catfacts>true</catfacts>
-		<dadjokes>true</dadjokes>
+		<dice>false</dice>
+		<catfacts>false</catfacts>
+		<dadjokes>false</dadjokes>
 		<dadjokechance>1</dadjokechance>
-		<logger>true</logger>
-		<admin>RecursiveChaos</admin>
-		<rcrover>true</rcrover>
+		<logger>false</logger>
+		<admin>username</admin>
+		<rcrover>false</rcrover>
 	</bot>
 	<!--  
 	<bot>
@@ -31,5 +31,8 @@
 		<catfacts>true</catfacts>
 		<dadjokes>true</dadjokes>
 		<dadjokechance>5</dadjokechance>
+		<logger>false</logger>
+		<admin>username</admin>
+		<rcrover>false</rcrover>
 	</bot> -->
 </config>

@@ -3,7 +3,7 @@ package com.recursivechaos.rcbot.plugins.redditPreview;
 /**
  * UrlBO handles all of the generic URL handling logic
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.io.IOException;
 import java.net.HttpURLConnection;

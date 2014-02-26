@@ -5,7 +5,7 @@ package com.recursivechaos.rcbot.plugins.dice;
  * For example, 1D6 will return an int between 1 and 6,
  * or 4D10 + 5 will return an int between 15 and 45.
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.util.Random;
 

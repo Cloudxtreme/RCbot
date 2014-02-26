@@ -6,7 +6,7 @@ package com.recursivechaos.rcbot.plugins.dice;
  * such as !roll 2D10 to hit, and the bot will add the "to hit" to the end of 
  * the response.
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;

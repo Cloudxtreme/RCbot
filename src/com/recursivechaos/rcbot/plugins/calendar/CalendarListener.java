@@ -4,7 +4,7 @@ package com.recursivechaos.rcbot.plugins.calendar;
  * CalendarListener will fetch the next event from a calendar URL and post
  * it to the channel. 
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -21,7 +21,7 @@ import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarEventFeed;
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
-import com.recursivechaos.rcbot.settings.SettingsBO;
+import com.recursivechaos.rcbot.plugins.admin.SettingsBO;
 
 public class CalendarListener extends ListenerAdapter<MyPircBotX> {
 	SettingsBO settings = new SettingsBO();

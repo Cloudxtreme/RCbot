@@ -4,7 +4,7 @@ package com.recursivechaos.rcbot.plugins.redditPreview;
  * RedditPreviewListener will check messages for a valid reddit url, and
  * display a preview
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import static java.util.Arrays.asList;
 
@@ -16,7 +16,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.recursivechaos.rcbot.settings.SettingsBO;
+import com.recursivechaos.rcbot.plugins.admin.SettingsBO;
 
 @SuppressWarnings("rawtypes")
 public class RedditPreviewListener extends ListenerAdapter {

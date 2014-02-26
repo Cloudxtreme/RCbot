@@ -1,5 +1,10 @@
 package com.recursivechaos.rcbot.plugins.admin;
 
+/**
+ * AdminListener listens to the bot for admin commands.
+ * 
+ * @author Andrew Bell www.recursivechaos.com
+ */
 import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.slf4j.Logger;

@@ -4,7 +4,7 @@ package com.recursivechaos.rcbot.plugins.dadjokes;
  * DadJokeListener parses text for the word "I'm" in order to make a "dad joke"
  * from the user's text.
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.util.Random;
 

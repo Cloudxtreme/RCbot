@@ -1,7 +1,7 @@
 package com.recursivechaos.rcbot.plugins.dice;
 
 /**
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 public class DiceException extends Exception {
 	private static final long serialVersionUID = 1L;

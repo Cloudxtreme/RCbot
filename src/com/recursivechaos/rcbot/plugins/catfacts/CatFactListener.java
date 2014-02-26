@@ -5,7 +5,7 @@ package com.recursivechaos.rcbot.plugins.catfacts;
  * the catfacts.txt file in the root of the project. Could be easily added to
  * add any sort of 'random facts/sayings' to the bot.
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 import java.io.BufferedReader;
 import java.io.FileReader;

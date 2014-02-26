@@ -3,7 +3,7 @@ package com.recursivechaos.rcbot.plugins.dice;
 /**
  * RollDAO is the interface for RollDAOImpl
  * 
- * @author Andrew Bell
+ * @author Andrew Bell www.recursivechaos.com
  */
 public interface RollDAO {
 	public String getFlavorText(String message);
