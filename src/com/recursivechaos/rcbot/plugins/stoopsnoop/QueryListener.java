@@ -45,14 +45,16 @@ public class QueryListener extends ListenerAdapter<PircBotX> {
 			event.respond("Daily Word Count (24 hrs): " + count);
 		}
 		if (event.getMessage().contains("!trending")){
+			int count = 5;
 			QueryDAO query = new QueryDAOImpl();
 			Timestamp now = new Timestamp(event.getTimestamp());
 			Timestamp yesterday = new Timestamp(event.getTimestamp()-ONE_DAY);
-			HashMap<String,Integer> topWords = 
-					query.getTopWords(5, event.getChannel().getName(), yesterday, now);
+			String[][] topWords = 
+					query.getTopWords(count, event.getChannel().getName(), yesterday, now);
 			String response = "Trending Words (24 Hours): ";
-			for (Entry<String, Integer> entry : topWords.entrySet()) {
-			    String block = (entry.getKey() + ":" + entry.getValue()+ " ");
+			//for (Entry<String, Integer> entry : topWords.entrySet()) {
+			for (int i = 0; i<count;i++){
+				String block = (topWords[i][0] + ":" + topWords[i][1]+ " ");
 				response= response + block;
 			}
 			event.respond(response);

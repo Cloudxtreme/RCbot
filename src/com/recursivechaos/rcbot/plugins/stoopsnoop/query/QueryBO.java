@@ -1,7 +1,9 @@
 package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
 
 /**
- * QueryBO handles all of the filters for the queries
+ * QueryBO handles all of the filters for the queries. 
+ * For the record, I don't like that it calls DAO, but until I expand my 
+ * data mapping, this is what it's gonig to be :)
  * 
  * @author Andrew Bell
  */
@@ -15,9 +17,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
+
+import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.DAO;
+import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.DictWordDAOImpl;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.DictWord;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
 
-public class QueryBO {
+public class QueryBO extends DAO{
 
 	/**
 	 * filterChannel returns records matching the channel filter.
@@ -101,9 +110,21 @@ public class QueryBO {
         	 for ( String word : arr) {
         		 int countWord = 0;
         		 word = word.toLowerCase();
+        		 // remove punctuation
+        		 word = removePunctuation(word,".");
+        		 word = removePunctuation(word,"?");
+        		 // effectively removes all bot commands
+        		 word = removePunctuation(word,"!");
+        		 word = removePunctuation(word,",");
+        		 word = removePunctuation(word,"http://");
+        		 word = removePunctuation(word,"-");
+        		 word = removePunctuation(word,"(");
+        		 word = removePunctuation(word,":");
                  if(!listOfWords.containsKey(word))
                  {                             //add word if it isn't added already
-                     listOfWords.put(word, 1); //first occurance of this word
+                	 if (!word.isEmpty()){
+                		 listOfWords.put(word, 1); //first occurance of this word
+                	 }
                  }
                  else
                  {
@@ -117,44 +138,34 @@ public class QueryBO {
         return listOfWords; //return the HashMap you made of distinct words
 	}
 
-	public static HashMap<String, Integer> getTop(int size,HashMap<String, Integer> wordMap) {
-		HashMap<String,Integer> top = new HashMap<String,Integer>();
-		boolean match = false;
-		int high = 0;
-		int lastHigh = Integer.MAX_VALUE;
-		List<String> hasHigh = new ArrayList<String>();
-		do{
-			do{
-				HashMap<String,Integer> safeMap = new HashMap<String,Integer>(wordMap);
-				Iterator<Entry<String, Integer>> it = safeMap.entrySet().iterator();
-			    high = 0;
-				while (it.hasNext()) {
-			        Map.Entry pairs = (Map.Entry)it.next();
-			        System.out.println(pairs.getKey() + " = " + pairs.getValue());
-			        if (Integer.parseInt(pairs.getValue().toString()) > high && Integer.parseInt(pairs.getValue().toString()) < lastHigh){
-			        	match = true;
-			        	hasHigh = new ArrayList<String>();
-			        	high = Integer.parseInt(pairs.getValue().toString());
-			        	hasHigh.add(pairs.getKey().toString());
-			        }else if (Integer.parseInt(pairs.getValue().toString()) == high){
-			        	match = true;
-			        	hasHigh.add(pairs.getKey().toString());
-			        }
-			        it.remove(); // avoids a ConcurrentModificationException
+	private static String removePunctuation(String word, String punc) {
+		while(word.contains(punc)==true){
+			 word = word.substring(0,word.indexOf(punc));
+		 }
+		return word;
+	}
+
+	public static String[][] getTop(int size,HashMap<String, Integer> wordMap) {
+		// Create a 2D string array, so order does not get swapped.
+		String[][] 	top = new String [size][2];
+		
+		// iterate size
+		for (int i = 0; i<size;i++){
+			String 		tempKey = "";
+			int			tempVal = 0;
+
+			// iterate through word map to find highest value
+			for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
+			    
+				if( entry.getValue() > tempVal){
+			    	tempVal = entry.getValue();
+			    	tempKey = entry.getKey();
 			    }
-			}while(match==false);
-			// Add list of words, and the current high value to the hashmap
-			if(hasHigh.size()>0){
-				for(int i = 0; i<hasHigh.size(); i++){
-					if(top.size()<size){
-						top.put(hasHigh.get(i), high);
-					}
-				}
 			}
-			lastHigh = high;
-			match = false;
-			
-		}while(top.size()<size);
+			top[i][0]=tempKey;
+			top[i][1]=Integer.toString(tempVal);
+			wordMap.remove(tempKey);
+		}
 		return top;
 	}
 	
@@ -170,10 +181,33 @@ public class QueryBO {
 		}
 	}
 
-	public static HashMap<String, Integer> removeIgnoredWords(
-			HashMap<String, Integer> wordMap) {
+	public static HashMap<String, Integer> removeIgnoredWords(HashMap<String, Integer> wordMap) {
 		
-		
-		return null;
+		// load dictionary
+		DictWordDAO dictionary = new DictWordDAOImpl();
+		// get list of ignored words
+		List<DictWord> ignoreList = (List<DictWord>) dictionary.getIgnoredWordList();
+		// iterate through ignoreList
+		for (DictWord word : ignoreList) {
+			// remove by key :)
+			wordMap.remove(word.getWord().toLowerCase());
+		}
+		return wordMap;
+	}
+
+	public static HashMap<String, Integer> removeNicks(
+			HashMap<String, Integer> culledMap, String channel) {
+		// fetch distinct list
+		Query query = getSession().createQuery("SELECT DISTINCT nick " +
+				"FROM EventLog " +
+				"WHERE channel = ?");
+		query.setString(0, channel);
+		// remove from list
+		List<String> nicks = query.list();
+		for (String word : nicks) {
+			// remove by key :)
+			culledMap.remove(word.toLowerCase());
+		}
+		return culledMap;
 	}
 }

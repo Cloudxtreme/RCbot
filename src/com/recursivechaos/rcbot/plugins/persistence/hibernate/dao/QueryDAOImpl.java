@@ -56,14 +56,15 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	public HashMap<String, Integer> getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end){
+	public String[][] getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end){
 		// create criteria
 		Criteria c = getSession().createCriteria(EventLog.class);
 		c.add(Restrictions.eq("channel", channel));
 		c.add(Restrictions.between("sqltimestamp", start, end));
 		HashMap<String, Integer> wordMap = QueryBO.getWordMap((List<EventLog>)c.list());
 		HashMap<String, Integer> culledMap = QueryBO.removeIgnoredWords(wordMap);
-		HashMap<String, Integer> topList = QueryBO.getTop(5,culledMap);
+		HashMap<String, Integer> lessNicksMap = QueryBO.removeNicks(culledMap,channel);
+		String[][] topList = QueryBO.getTop(NumOfRecords,lessNicksMap);
 		return topList;
 	}
 }

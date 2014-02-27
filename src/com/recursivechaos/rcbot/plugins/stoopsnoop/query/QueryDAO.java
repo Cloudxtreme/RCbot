@@ -37,5 +37,5 @@ public interface QueryDAO {
 	 */
 	public int getWordCount(String searchTerm, String channel, Timestamp start, Timestamp end);
 	
-	public HashMap<String, Integer> getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end);
+	public String[][] getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end);
 }
