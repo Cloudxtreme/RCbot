@@ -2,7 +2,10 @@ package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
 
 import java.sql.Timestamp;
 
+import org.pircbotx.hooks.events.MessageEvent;
+
 import com.recursivechaos.rcbot.bot.object.BotException;
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 
 /**
  * QueryDAO provides a common interface for queries to the database.
@@ -37,4 +40,6 @@ public interface QueryDAO {
 	public int getWordCount(String searchTerm, String channel, Timestamp start, Timestamp end);
 	
 	public String[][] getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end);
+
+	public void newGenericQuery(MessageEvent<MyPircBotX> event);
 }

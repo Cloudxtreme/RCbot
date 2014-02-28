@@ -7,19 +7,23 @@ package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
  * 
  * @author Andrew Bell
  */
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.hibernate.Query;
+import org.pircbotx.hooks.events.MessageEvent;
 
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.DAO;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.DictWordDAOImpl;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.DictWord;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
 
 public class QueryBO extends DAO{
-
+	public static long ONE_DAY = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
 	/**
 	 * filterChannel returns records matching the channel filter.
 	 * 
@@ -190,5 +194,24 @@ public class QueryBO extends DAO{
 			culledMap.remove(word.toLowerCase());
 		}
 		return culledMap;
+	}
+
+	public Timestamp getNow(MessageEvent<MyPircBotX> event) {
+		return new Timestamp(event.getTimestamp());
+	}
+
+	public Timestamp getDaysAgo(MessageEvent<MyPircBotX> event, int i) {
+		return new Timestamp(event.getTimestamp()-(ONE_DAY*i));
+	}
+
+	public void displayTrendingList(String[][] topWords, int count,
+			MessageEvent<MyPircBotX> event) {
+		String response = "Trending Words (24 Hours): ";
+		//for (Entry<String, Integer> entry : topWords.entrySet()) {
+		for (int i = 0; i<count;i++){
+			String block = (topWords[i][0] + ":" + topWords[i][1]+ " ");
+			response= response + block;
+		}
+		event.respond(response);
 	}
 }
