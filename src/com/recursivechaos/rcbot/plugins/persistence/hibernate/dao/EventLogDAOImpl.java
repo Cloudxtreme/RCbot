@@ -7,20 +7,21 @@ package com.recursivechaos.rcbot.plugins.persistence.hibernate.dao;
  * @author Andrew Bell www.recursivechaos.com
  * 
  */
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.events.ActionEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.ServerPingEvent;
 
+import com.recursivechaos.rcbot.bot.object.BotException;
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.log.EventLogDAO;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
 
 public class EventLogDAOImpl extends DAO implements EventLogDAO {
 
-	private void heartbeat(Event<PircBotX> event) {
+	private void heartbeat(Event<MyPircBotX> event) throws BotException {
 		try {
-			ServerPingEvent<PircBotX> pingEvent = (ServerPingEvent<PircBotX>) event;
+			ServerPingEvent<MyPircBotX> pingEvent = (ServerPingEvent<MyPircBotX>) event;
 			EventLog eventlog = new EventLog(pingEvent.getTimestamp(),
 					"SERVER", "", "", event.getBot().getNick(),
 					EventLog.TYPE.PING.toString());
@@ -30,20 +31,21 @@ public class EventLogDAOImpl extends DAO implements EventLogDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			rollback();
+			throw new BotException("Error logging server ping.",e);
 		} finally {
 			close();
 		}
 		System.out.println("Heartbeat confirmed.");
 	}
 
-	@Override
-	public void logEvent(Event<PircBotX> event) {
+	public void logEvent(Event<MyPircBotX> event) throws BotException {
 		// Message event
 		// TODO: Compare object instead of string
 		if (event.getClass().toString()
 				.equals("class org.pircbotx.hooks.events.MessageEvent")) {
 			try {
-				MessageEvent<PircBotX> msgEvent = (MessageEvent<PircBotX>) event;
+				MessageEvent<MyPircBotX> msgEvent = (MessageEvent<MyPircBotX>) event;
 
 				EventLog eventlog = new EventLog(msgEvent.getTimestamp(),
 						msgEvent.getUser().getNick(), msgEvent.getMessage(),
@@ -55,6 +57,8 @@ public class EventLogDAOImpl extends DAO implements EventLogDAO {
 
 			} catch (Exception e) {
 				e.printStackTrace();
+				rollback();
+				throw new BotException("Error logging message.",e);
 			} finally {
 				close();
 			}
@@ -62,7 +66,7 @@ public class EventLogDAOImpl extends DAO implements EventLogDAO {
 		if (event.getClass().toString()
 				.equals("class org.pircbotx.hooks.events.ActionEvent")) {
 			try {
-				ActionEvent<PircBotX> actEvent = (ActionEvent<PircBotX>) event;
+				ActionEvent<MyPircBotX> actEvent = (ActionEvent<MyPircBotX>) event;
 				EventLog eventlog = new EventLog(actEvent.getTimestamp(),
 						actEvent.getUser().getNick(), actEvent.getMessage(),
 						actEvent.getChannel().getName(), event.getBot()
@@ -72,6 +76,8 @@ public class EventLogDAOImpl extends DAO implements EventLogDAO {
 				commit();
 			} catch (Exception e) {
 				e.printStackTrace();
+				rollback();
+				throw new BotException("Error logging action.",e);
 			} finally {
 				close();
 			}

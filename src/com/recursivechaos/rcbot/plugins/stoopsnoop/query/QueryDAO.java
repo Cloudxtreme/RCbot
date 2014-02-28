@@ -1,10 +1,8 @@
 package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
 
-import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
+import com.recursivechaos.rcbot.bot.object.BotException;
 
 /**
  * QueryDAO provides a common interface for queries to the database.
@@ -23,6 +21,7 @@ public interface QueryDAO {
 	 * @param channel
 	 *            String name of channel to search on (include the '#' char)
 	 * @return integer of total word count
+	 * @throws BotException 
 	 */
 	public int getWordCount(String searchTerm, String channel);
 	

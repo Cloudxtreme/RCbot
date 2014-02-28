@@ -7,10 +7,12 @@ package com.recursivechaos.rcbot.plugins.stoopsnoop.log;
  * @author Andrew Bell www.recursivechaos.com
  * 
  */
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.Event;
+
+import com.recursivechaos.rcbot.bot.object.BotException;
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 
 public interface EventLogDAO {
 
-	public void logEvent(Event<PircBotX> event);
+	public void logEvent(Event<MyPircBotX> event) throws BotException;
 }

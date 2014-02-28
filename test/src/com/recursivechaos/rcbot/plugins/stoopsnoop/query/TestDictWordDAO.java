@@ -1,7 +1,6 @@
 package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.TestCase;

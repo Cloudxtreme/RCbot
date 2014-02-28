@@ -9,8 +9,6 @@ package com.recursivechaos.rcbot.plugins.stoopsnoop;
  * 
  */
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.pircbotx.PircBotX;
@@ -30,13 +28,18 @@ public class QueryListener extends ListenerAdapter<PircBotX> {
 	public static long ONE_DAY = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
 	@Override
 	public void onMessage(final MessageEvent<PircBotX> event) {
-		if (event.getMessage().contains("!wc ")) {
+		// Big bad mega-query
+		if (event.getMessage().startsWith("!query")){
+			//QueryDAO query = new QueryDAOImpl();
+			
+		}
+		if (event.getMessage().startsWith("!wc")) {
 			QueryDAO query = new QueryDAOImpl();
 			event.respond("Word Count: "
 					+ query.getWordCount(event.getMessage().substring(4), event
 							.getChannel().getName()));
 		}
-		if (event.getMessage().contains("!dwc")){
+		if (event.getMessage().startsWith("!dwc")){
 			QueryDAO query = new QueryDAOImpl();
 			Timestamp now = new Timestamp(event.getTimestamp());
 			Timestamp yesterday = new Timestamp(event.getTimestamp()-ONE_DAY);
@@ -44,7 +47,7 @@ public class QueryListener extends ListenerAdapter<PircBotX> {
 							.getChannel().getName(),yesterday,now);
 			event.respond("Daily Word Count (24 hrs): " + count);
 		}
-		if (event.getMessage().contains("!trending")){
+		if (event.getMessage().startsWith("!trending")){
 			int count = 5;
 			QueryDAO query = new QueryDAOImpl();
 			Timestamp now = new Timestamp(event.getTimestamp());
