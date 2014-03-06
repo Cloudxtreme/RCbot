@@ -5,6 +5,7 @@ package com.recursivechaos.rcbot.plugins.persistence.hibernate.dao;
  * 
  * @author Andrew Bell www.recursivechaos.com
  */
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,11 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.autobanner.AutobannerDAO;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.NickFilterGroup;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryBO;
 
 public class AutobannerDAOImpl extends DAO implements AutobannerDAO{
@@ -81,8 +86,37 @@ public class AutobannerDAOImpl extends DAO implements AutobannerDAO{
 
 	@Override
 	public void banUser(MessageEvent<MyPircBotX> event, String note, int hours) {
-		
-		
+		QueryBO helper = new QueryBO();
+		Timestamp start = helper.getNow(event);
+		Timestamp end = helper.getHoursFromNow(event,hours);
+		// create ban object
+		NickFilterGroup ban = new NickFilterGroup();
+		ban.setNick(event.getUser().getNick());
+		ban.setChannel(event.getChannel().getName());
+		// search for any existing bans
+		try{
+			Criteria c = getSession().createCriteria(NickFilterGroup.class);
+			c.add( Example.create(ban));
+			c.add(Restrictions.lt("end",end));
+			List results = c.list();
+			// If ban in effect, don't add another
+			if(results.isEmpty()){
+				// set rest of ban
+				ban.setNickFilterName("Spammer");
+				ban.setEnd(end);
+				ban.setStart(start);
+				ban.setNote(note);
+				// commit
+				begin();
+				getSession().save(ban);
+				commit();
+			}
+		}catch(Exception e){
+			
+		}finally{
+			close();
+		}
+
 	}
 
 }

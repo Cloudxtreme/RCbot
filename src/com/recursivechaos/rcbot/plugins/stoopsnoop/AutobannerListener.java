@@ -18,13 +18,18 @@ import com.recursivechaos.rcbot.plugins.stoopsnoop.autobanner.AutobannerDAO;
 public class AutobannerListener extends ListenerAdapter<MyPircBotX> {
 
 	public void onMessage(final MessageEvent<MyPircBotX> event) throws Exception {
+		String admin = event.getBot().getSettings().getAdmin();
 		AutobannerDAO banhammer = new AutobannerDAOImpl();
 		if(banhammer.isFloodSpam(event)){
 			banhammer.banUser(event,"Flooding.",24);
-			event.respond("I'm telling (Flooding)");
+			//event.respond("I'm telling (Flooding)");
+			event.getBot().sendIRC().message(admin, event.getUser().getNick() 
+					+ " is flood spamming in" + event.getChannel().getName());
 		}else if(banhammer.isBulkSpam(event)){
 			banhammer.banUser(event,"Bulk Spam.",24);
-			event.respond("I'm telling (Bulk)");
+			//event.respond("I'm telling (Bulk)");
+			event.getBot().sendIRC().message(admin, event.getUser().getNick() 
+					+ " is bulk spamming in" + event.getChannel().getName());
 		}
 	}
 }

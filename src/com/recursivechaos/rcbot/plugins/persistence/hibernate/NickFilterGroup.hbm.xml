@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.recursivechaos.rcbot.plugins.stoopsnoop.objects.NickFilterGroup" table="NICK_FILTER_GROUP">
+        <id name="id" type="int">
+            <column name="NFG_ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="nick" type="java.lang.String">
+            <column name="NFG_NICK" />
+        </property>
+        <property name="nickFilterName" type="java.lang.String">
+            <column name="NFG_NAME" />
+        </property>
+        <property name="channel" type="java.lang.String">
+            <column name="NFG_CHANNEL" />
+        </property>
+        <property name="start" type="java.sql.Timestamp">
+            <column name="NFG_START" />
+        </property>
+         <property name="end" type="java.sql.Timestamp">
+            <column name="NFG_END" />
+        </property>
+        <property name="note" type="java.lang.String">
+            <column name="NFG_NOTE" />
+        </property>
+    </class>
+</hibernate-mapping>

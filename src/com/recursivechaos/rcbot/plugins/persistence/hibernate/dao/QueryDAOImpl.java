@@ -71,7 +71,9 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		Criteria c = getSession().createCriteria(EventLog.class);
 		c.add(Restrictions.eq("channel", channel));
 		c.add(Restrictions.between("sqltimestamp", start, end));
-		HashMap<String, Integer> wordMap = QueryBO.getWordMap((List<EventLog>)c.list());
+		List<EventLog> results = c.list();
+		results = QueryBO.removeSpammers(results,channel);
+		HashMap<String, Integer> wordMap = QueryBO.getWordMap(results);
 		HashMap<String, Integer> culledMap = QueryBO.removeIgnoredWords(wordMap);
 		HashMap<String, Integer> lessNicksMap = QueryBO.removeNicks(culledMap,channel);
 		String[][] topList = QueryBO.getTop(NumOfRecords,lessNicksMap);
@@ -115,12 +117,7 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 	 * @return squeaky clean output
 	 */
 	private String sanitize(String input) {
-		while(input.startsWith(" ")){
-			input = input.substring(1);
-		}
-		while(input.endsWith(" ")){
-			input = input.substring(0,input.length()-1);
-		}
+		input = input.trim();
 		input = input.toLowerCase();
 		return input;
 	}
@@ -161,22 +158,23 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 			c.add(Restrictions.between("sqltimestamp",start,now));
 			switch(myQueryConfig.getReport()) {
 			   case TRENDING:
-				   String response = "TRENDING: ";
+				   String response = "TRENDING:";
 				   // Set channel (default)
 				   c.add(Restrictions.like("channel", myQueryConfig.getChannel()));
 				   // Set nick (optional)
-				   if(!myQueryConfig.getUser().isEmpty()){
+				   if(myQueryConfig.getUser()!=null){
 					   c.add(Restrictions.like("nick", myQueryConfig.getUser()));
 					   response = response + " USER: " + myQueryConfig.getUser();
 				   } else {
 					   response = response + " CHANNEL: " + myQueryConfig.getUser();
 				   }
-				   response = response + " TIME: " + TEMP_DAYS + " days.";
+				   response = response + " TIME: " + TEMP_DAYS + " days";
 				   response = response + " TOP "  + TEMP_RECORDS + ": ";
 				   
 				   // Run the query
 				   @SuppressWarnings("unchecked")
 				   List<EventLog> list = (List<EventLog>)c.list();
+				   list= QueryBO.removeSpammers(list,myQueryConfig.getChannel());
 				   HashMap<String, Integer> wordMap = QueryBO.getWordMap(list);
 				   wordMap = QueryBO.removeIgnoredWords(wordMap);
 				   wordMap = QueryBO.removeNicks(wordMap,myQueryConfig.getChannel());

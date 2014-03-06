@@ -8,12 +8,17 @@ package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
  * @author Andrew Bell
  */
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
@@ -21,8 +26,13 @@ import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.DAO;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.DictWordDAOImpl;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.DictWord;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.NickFilterGroup;
 
 public class QueryBO extends DAO{
+	private static final int SECOND = 1000;
+	private static final int MINUTE = 60 * SECOND;
+	private static final int HOUR = 60 * MINUTE;
+	private static final int DAY = 24 * HOUR;
 	public static long ONE_DAY = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
 	/**
 	 * filterChannel returns records matching the channel filter.
@@ -116,6 +126,7 @@ public class QueryBO extends DAO{
         		 word = removePunctuation(word,"-");
         		 word = removePunctuation(word,"(");
         		 word = removePunctuation(word,":");
+        		 word = removePunctuation(word,"*");
                  if(!listOfWords.containsKey(word))
                  {                             //add word if it isn't added already
                 	 if (!word.isEmpty()){
@@ -213,5 +224,43 @@ public class QueryBO extends DAO{
 			response= response + block;
 		}
 		event.respond(response);
+	}
+
+	public Timestamp getHoursFromNow(MessageEvent<MyPircBotX> event, int hours) {
+		return new Timestamp(event.getTimestamp()+(hours*HOUR));
+	}
+
+	public static List<EventLog> removeSpammers(
+			List<EventLog> messageList, String channel) {
+		List<NickFilterGroup> banList = getBannedUsers(channel);
+		
+				Iterator<EventLog> i = messageList.iterator();
+				while (i.hasNext()) {
+					EventLog message = i.next(); // must be called before you can call i.remove()
+					for (NickFilterGroup ban : banList){
+						if(message.getNick().equals(ban.getNick())){
+							 i.remove();
+						}
+					}
+				}
+		return messageList;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<NickFilterGroup> getBannedUsers(String channel) {
+		java.util.Date today = new java.util.Date();
+		Timestamp start = new Timestamp(today.getTime());
+		List<NickFilterGroup> results = new ArrayList<NickFilterGroup>();
+		try{
+			Criteria c = getSession().createCriteria(NickFilterGroup.class);
+			c.add(Restrictions.eq("channel", channel));
+			c.add(Restrictions.gt("end",start));
+			results = (List<NickFilterGroup>) c.list();
+		}catch(Exception e){
+			
+		}finally{
+			close();
+		}
+		return results;
 	}
 }

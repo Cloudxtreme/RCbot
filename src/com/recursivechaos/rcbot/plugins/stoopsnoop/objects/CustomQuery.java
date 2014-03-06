@@ -35,7 +35,7 @@ public class CustomQuery {
 		// find nick
 		for (int i= 2;i<inArray.length;i++){
 			String test = inArray[i].trim();
-			if (test.equals("-u")){
+			if (test.equals("-n")){
 				nick = inArray[i+1];
 			}
 		}
