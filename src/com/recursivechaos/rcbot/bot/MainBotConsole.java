@@ -11,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.pircbotx.MultiBotManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.recursivechaos.rcbot.bot.bo.ConfigFactory;
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
@@ -20,11 +18,8 @@ import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 public class MainBotConsole {
 
 	public static void main(String[] args) {
-		// Start logger
-		Logger logger = LoggerFactory.getLogger(MainBotConsole.class);
 		// Create configuration factory
 		ConfigFactory myConfigFactory = new ConfigFactory();
-		logger.info("Created myConfigFactory");
 		// Load bot array from file
 		List<MyPircBotX> botList = new ArrayList<>();
 		botList = myConfigFactory.loadBotsFromXML();

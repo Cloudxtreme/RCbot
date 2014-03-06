@@ -6,6 +6,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.BotException;
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.CustomQuery;
 
 /**
  * QueryDAO provides a common interface for queries to the database.
@@ -42,4 +43,8 @@ public interface QueryDAO {
 	public String[][] getTopWords(int NumOfRecords, String channel, Timestamp start, Timestamp end);
 
 	public void newGenericQuery(MessageEvent<MyPircBotX> event);
+
+	public boolean verifyUserHistory(CustomQuery customQuery);
+
+	public void executeQuery(CustomQuery myQueryConfig);
 }

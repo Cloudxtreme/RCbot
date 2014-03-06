@@ -1,7 +1,7 @@
 package com.recursivechaos.rcbot.plugins.stoopsnoop;
 
 /**
- * QueryListener handles all user input to run queries. Some queries will require 
+ * QueryListener handles all nick input to run queries. Some queries will require 
  * some fiddiling to get the right arguments for the queries. A business object may
  * be able to take some of this burden.
  * 
@@ -19,6 +19,7 @@ import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.EventLogDAOImpl;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.QueryDAOImpl;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.log.EventLogDAO;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.CustomQuery;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryBO;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryDAO;
 
@@ -29,8 +30,11 @@ public class QueryListener extends ListenerAdapter<MyPircBotX> {
 	public void onMessage(final MessageEvent<MyPircBotX> event) {
 		// Big bad mega-query
 		if (event.getMessage().startsWith("!query")){
+			//QueryDAO query = new QueryDAOImpl();
+			CustomQuery myQueryConfig = new CustomQuery(event);
 			QueryDAO query = new QueryDAOImpl();
-			query.newGenericQuery(event);
+			query.executeQuery(myQueryConfig);
+			//query.newGenericQuery(event);
 		}
 		if (event.getMessage().startsWith("!wc")) {
 			QueryDAO query = new QueryDAOImpl();

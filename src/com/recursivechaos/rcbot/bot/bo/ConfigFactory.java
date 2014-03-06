@@ -27,6 +27,7 @@ import com.recursivechaos.rcbot.plugins.dice.DiceListener;
 import com.recursivechaos.rcbot.plugins.newUserGreetingPlugin.NewUserGreetingListener;
 import com.recursivechaos.rcbot.plugins.rcrover.RoverListener;
 import com.recursivechaos.rcbot.plugins.redditPreview.RedditPreviewListener;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.AutobannerListener;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.LogListener;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.QueryListener;
 
@@ -75,6 +76,7 @@ public class ConfigFactory {
 		if (mySettings.getLogger() == true) {
 			myBuilder.addListener(new LogListener());
 			myBuilder.addListener(new QueryListener());
+			myBuilder.addListener(new AutobannerListener());
 		}
 		if (mySettings.getRcrover() == true){
 			myBuilder.addListener(new RoverListener());

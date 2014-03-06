@@ -25,7 +25,7 @@ public class NewUserGreetingListener extends ListenerAdapter {
 	Logger logger = LoggerFactory.getLogger(NewUserGreetingListener.class);
 
 	/**
-	 * Adds user to the known users list
+	 * Adds nick to the known users list
 	 * 
 	 * @param username
 	 *            string of the username
@@ -77,11 +77,11 @@ public class NewUserGreetingListener extends ListenerAdapter {
 	}
 
 	/**
-	 * Returns if the user is a new visitor to the channel
+	 * Returns if the nick is a new visitor to the channel
 	 * 
 	 * @param event
 	 *            join event
-	 * @return true if new user
+	 * @return true if new nick
 	 * @throws Exception
 	 */
 	private boolean isExistingUser(JoinEvent event) {
@@ -96,13 +96,13 @@ public class NewUserGreetingListener extends ListenerAdapter {
 		String username = event.getUser().getNick();
 		for (String u : knownUsers) {
 			if (event.getUser().getNick().equalsIgnoreCase(u)) {
-				logger.info("Known user: " + username);
+				logger.info("Known nick: " + username);
 				existingUser = true;
 			}
 		}
-		// New user
+		// New nick
 		if (existingUser == false) {
-			logger.info("New user: " + username);
+			logger.info("New nick: " + username);
 			addKnownUser(username);
 		}
 		return existingUser;
@@ -112,7 +112,7 @@ public class NewUserGreetingListener extends ListenerAdapter {
 	@Override
 	public void onJoin(JoinEvent event) {
 		logger.info(event.getUser().getNick() + " joined the channel.");
-		// If not an existing user, welcomes new user.
+		// If not an existing nick, welcomes new nick.
 		if (!isExistingUser(event)) {
 			// TODO: get reply from configuration file
 			event.respond("Welcome to "

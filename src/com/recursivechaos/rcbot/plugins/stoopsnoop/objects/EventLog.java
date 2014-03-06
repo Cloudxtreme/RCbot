@@ -12,6 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.pircbotx.hooks.events.MessageEvent;
+
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
+
 @Entity
 public class EventLog {
 	public enum TYPE {
@@ -40,6 +44,10 @@ public class EventLog {
 		this.channel = name;
 		this.bot = nick3;
 		this.eventType = type;
+	}
+
+	public EventLog(MessageEvent<MyPircBotX> event) {
+		this.message = event.getMessage();
 	}
 
 	public String getBot() {

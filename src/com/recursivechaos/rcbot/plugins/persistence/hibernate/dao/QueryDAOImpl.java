@@ -13,10 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.CustomQuery;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryBO;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryDAO;
@@ -31,7 +34,7 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		List<EventLog> records = new ArrayList<EventLog>();
 		try{
 			Criteria c = getSession().createCriteria(EventLog.class);
-			// add filter on user's name
+			// add filter on nick's name
 			c.add(Restrictions.ilike("message", "%" + searchTerm + "%"));
 			// Restricts only to the channel called from.
 			c.add(Restrictions.eq("channel", channel));
@@ -50,7 +53,7 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		searchTerm = searchTerm.toLowerCase();
 		List<EventLog> records = new ArrayList<EventLog>();
 		Criteria c = getSession().createCriteria(EventLog.class);
-		// add filter on user's name
+		// add filter on nick's name
 		c.add(Restrictions.ilike("message", "%" + searchTerm + "%"));
 		// Restricts only to the channel called from.
 		c.add(Restrictions.eq("channel", channel));
@@ -79,7 +82,7 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 	public void newGenericQuery(MessageEvent<MyPircBotX> event) {
 		QueryBO helper = new QueryBO();
 		Timestamp now = helper.getNow(event);
-		Timestamp yesterday = helper.getDaysAgo(event,1);
+		Timestamp start = helper.getDaysAgo(event,1);
 		// get message
 		String input = event.getMessage();
 		// cut "!query"
@@ -95,7 +98,7 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 			REPORT_LIST reports = REPORT_LIST.valueOf(report.toUpperCase());
 			switch(reports) {
 			   case TRENDING:
-				   String[][] reply = getTopWords(5,event.getChannel().getName(),yesterday,now);
+				   String[][] reply = getTopWords(5,event.getChannel().getName(),start,now);
 				   helper.displayTrendingList(reply,5,event);
 				   break;
 			   default:
@@ -121,4 +124,101 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		input = input.toLowerCase();
 		return input;
 	}
+
+	@Override
+	public boolean verifyUserHistory(CustomQuery customQuery) {
+		boolean returnStatus = false; 
+		try{
+			Criteria c = getSession().createCriteria(EventLog.class);
+			c.add(Restrictions.eq("channel", customQuery.getChannel()));
+			c.add(Restrictions.eq("nick", customQuery.getUser()));
+			c.setMaxResults(1);
+			List<?> resp = c.list();
+			if(resp.isEmpty()){
+				returnStatus = false;
+			} else {
+				returnStatus = true;
+			}
+		}catch(Exception e){
+			returnStatus = false;
+		}finally{
+			close();
+		}
+		
+		return returnStatus;
+	}
+
+	@Override
+	public void executeQuery(CustomQuery myQueryConfig) {
+		int TEMP_DAYS = 1;
+		int TEMP_RECORDS = 5;
+		QueryBO helper = new QueryBO();
+		try{
+			Criteria c = getSession().createCriteria(EventLog.class);
+			// Add time restriction
+			Timestamp now = helper.getNow(myQueryConfig.getEvent());
+			Timestamp start = helper.getDaysAgo(myQueryConfig.getEvent(),TEMP_DAYS);
+			c.add(Restrictions.between("sqltimestamp",start,now));
+			switch(myQueryConfig.getReport()) {
+			   case TRENDING:
+				   String response = "TRENDING: ";
+				   // Set channel (default)
+				   c.add(Restrictions.like("channel", myQueryConfig.getChannel()));
+				   // Set nick (optional)
+				   if(!myQueryConfig.getUser().isEmpty()){
+					   c.add(Restrictions.like("nick", myQueryConfig.getUser()));
+					   response = response + " USER: " + myQueryConfig.getUser();
+				   } else {
+					   response = response + " CHANNEL: " + myQueryConfig.getUser();
+				   }
+				   response = response + " TIME: " + TEMP_DAYS + " days.";
+				   response = response + " TOP "  + TEMP_RECORDS + ": ";
+				   
+				   // Run the query
+				   @SuppressWarnings("unchecked")
+				   List<EventLog> list = (List<EventLog>)c.list();
+				   HashMap<String, Integer> wordMap = QueryBO.getWordMap(list);
+				   wordMap = QueryBO.removeIgnoredWords(wordMap);
+				   wordMap = QueryBO.removeNicks(wordMap,myQueryConfig.getChannel());
+				   String[][] topList = QueryBO.getTop(TEMP_RECORDS,wordMap);
+				   // Add records
+				   for (int i = 0; i<TEMP_RECORDS;i++){
+						response = response + (topList[i][0] + "-" + topList[i][1]+ " ");
+					}
+				   myQueryConfig.getEvent().respond(response);
+				   break;
+			   case WORDCOUNT:
+				   break;
+			   case TOPUSER:
+				   break;
+			   case LASTMENTION:
+				   break;
+		}
+		}catch(Exception e){
+			// No errors are thrown here, but there's a lot going on
+		}finally{
+			close();
+		}
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<EventLog> getPreviousMessages(MessageEvent<MyPircBotX> event, int qty) {
+		List<EventLog> results = new ArrayList<EventLog>();
+		try{
+			Criteria c = getSession().createCriteria(EventLog.class);
+			c.add(Restrictions.like("channel", event.getChannel().getName()));
+			c.add(Restrictions.like("nick", event.getUser().getNick()));
+			c.addOrder(Order.desc("sqltimestamp"));
+			c.setMaxResults(qty);
+			results = c.list();
+		}catch(Exception e){
+			
+		}finally{
+			close();
+		}
+		return results;
+	}
+
+
 }
