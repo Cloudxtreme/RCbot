@@ -6,7 +6,7 @@
 	<session-factory>
         <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
         <property name="hibernate.connection.password">pw</property>
-        <property name="hibernate.connection.url">jdbc:mysql://host/db</property>
+        <property name="hibernate.connection.url">jdbc:mysql://server</property>
         <property name="hibernate.connection.username">user</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
     	<!-- Show SQL Queries for debugging -->
@@ -16,5 +16,6 @@
    		<!-- List of XML mapping files -->
    		<mapping resource="com/recursivechaos/rcbot/plugins/persistence/hibernate/EventLog.hbm.xml"/>
    		<mapping resource="com/recursivechaos/rcbot/plugins/persistence/hibernate/DictWord.hbm.xml"/>
+   		<mapping resource="com/recursivechaos/rcbot/plugins/persistence/hibernate/NickFilterGroup.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
