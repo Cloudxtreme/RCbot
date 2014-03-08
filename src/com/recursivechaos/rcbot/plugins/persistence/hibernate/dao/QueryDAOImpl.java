@@ -166,10 +166,10 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 					   c.add(Restrictions.like("nick", myQueryConfig.getUser()));
 					   response = response + " USER: " + myQueryConfig.getUser();
 				   } else {
-					   response = response + " CHANNEL: " + myQueryConfig.getUser();
+					   response = response + " CHANNEL: " + myQueryConfig.getChannel();
 				   }
-				   response = response + " TIME: " + TEMP_DAYS + " days";
-				   response = response + " TOP "  + TEMP_RECORDS + ": ";
+				   response = response + " TIME: " + TEMP_DAYS + " days:";
+				   //response = response + " TOP "  + TEMP_RECORDS + ": ";
 				   
 				   // Run the query
 				   @SuppressWarnings("unchecked")
@@ -181,7 +181,8 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 				   String[][] topList = QueryBO.getTop(TEMP_RECORDS,wordMap);
 				   // Add records
 				   for (int i = 0; i<TEMP_RECORDS;i++){
-						response = response + (topList[i][0] + "-" + topList[i][1]+ " ");
+						//response = response + (topList[i][0] + "-" + topList[i][1]+ " ");
+					   response = response + " " + (i+1) + ")" + topList[i][0] + "[" + topList[i][1] + "]";
 					}
 				   myQueryConfig.getEvent().respond(response);
 				   break;
@@ -218,5 +219,24 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<EventLog> getPreviousHourMessages(MessageEvent<MyPircBotX> event, int qty) {
+		List<EventLog> results = new ArrayList<EventLog>();
+		try{
+			Criteria c = getSession().createCriteria(EventLog.class);
+			c.add(Restrictions.like("channel", event.getChannel().getName()));
+			c.add(Restrictions.like("nick", event.getUser().getNick()));
+			c.add(Restrictions.gt("sqltimestamp", (event.getTimestamp()-QueryBO.HOUR)));
+			c.addOrder(Order.desc("sqltimestamp"));
+			c.setMaxResults(qty);
+			results = c.list();
+		}catch(Exception e){
+			
+		}finally{
+			close();
+		}
+		return results;
+	}
+	
 
 }

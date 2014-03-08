@@ -24,12 +24,14 @@ public class AutobannerListener extends ListenerAdapter<MyPircBotX> {
 			banhammer.banUser(event,"Flooding.",24);
 			//event.respond("I'm telling (Flooding)");
 			event.getBot().sendIRC().message(admin, event.getUser().getNick() 
-					+ " is flood spamming in" + event.getChannel().getName());
+					+ " is flood spamming in " + event.getChannel().getName() + " with line "+
+					event.getMessage());
 		}else if(banhammer.isBulkSpam(event)){
 			banhammer.banUser(event,"Bulk Spam.",24);
 			//event.respond("I'm telling (Bulk)");
 			event.getBot().sendIRC().message(admin, event.getUser().getNick() 
-					+ " is bulk spamming in" + event.getChannel().getName());
+					+ " is bulk spamming in " + event.getChannel().getName() + " with line "+
+					event.getMessage());
 		}
 	}
 }

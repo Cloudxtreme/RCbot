@@ -1,12 +1,14 @@
 package com.recursivechaos.rcbot.plugins.stoopsnoop.query;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.BotException;
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.CustomQuery;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
 
 /**
  * QueryDAO provides a common interface for queries to the database.
@@ -47,4 +49,7 @@ public interface QueryDAO {
 	public boolean verifyUserHistory(CustomQuery customQuery);
 
 	public void executeQuery(CustomQuery myQueryConfig);
+
+	public List<EventLog> getPreviousHourMessages(
+			MessageEvent<MyPircBotX> event, int tHRESHOLD);
 }

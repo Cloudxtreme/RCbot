@@ -7,6 +7,7 @@ package com.recursivechaos.rcbot.plugins.stoopsnoop.autobanner;
  */
 import org.pircbotx.hooks.events.MessageEvent;
 
+import com.recursivechaos.rcbot.bot.object.BotException;
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 
 public interface AutobannerDAO {
@@ -26,8 +27,9 @@ public interface AutobannerDAO {
 	 * @param event	event triggering ban
 	 * @param note	note to attach
 	 * @param hours	how long to ban
+	 * @throws BotException On error saving to db 
 	 */
-	void banUser(MessageEvent<MyPircBotX> event, String note, int hours);
+	void banUser(MessageEvent<MyPircBotX> event, String note, int hours) throws BotException ;
 
 	/**
 	 * isBulk spam checks the message contents for over-use of a word. Will check against list

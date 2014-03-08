@@ -6,6 +6,8 @@ package com.recursivechaos.rcbot.bot;
  * 
  * @author Andrew Bell www.recursivechaos.com
  */
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +20,10 @@ import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 public class MainBotConsole {
 
 	public static void main(String[] args) {
+		// Set up logger
+		URL myFolder = MainBotConsole.class.getProtectionDomain().getCodeSource().getLocation();
+		File rootFolder = new File(myFolder.getPath());
+		System.setProperty("app.root", rootFolder.getAbsolutePath());
 		// Create configuration factory
 		ConfigFactory myConfigFactory = new ConfigFactory();
 		// Load bot array from file
