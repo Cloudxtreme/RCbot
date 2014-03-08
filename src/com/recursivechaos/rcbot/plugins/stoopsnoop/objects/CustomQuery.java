@@ -6,6 +6,8 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.QueryDAOImpl;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.CustomQuery.Report;
+import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryBO;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryDAO;
 
 public class CustomQuery {
@@ -16,9 +18,12 @@ public class CustomQuery {
 	MessageEvent<MyPircBotX> event;
 	Timestamp start;
 	Timestamp end;
+	int timeQuantity;
+	String timePeriod;
 	
 	
 	public CustomQuery(MessageEvent<MyPircBotX> event) {
+		QueryBO helper = new QueryBO();
 		// get initial settings
 		this.channel 	= event.getChannel().getName();
 		this.event		= event;
@@ -35,13 +40,29 @@ public class CustomQuery {
 		// find nick
 		for (int i= 2;i<inArray.length;i++){
 			String test = inArray[i].trim();
+			// Get nick
 			if (test.equals("-n")){
 				nick = inArray[i+1];
 			}
+			// Get time
+			if (test.equals("-t")){
+				this.timeQuantity = Integer.parseInt(inArray[i+1]);
+				this.timePeriod = inArray[i+2];
+				this.start = helper.getPeriodsAgo(timeQuantity,timePeriod,event);
+			}
+			// Time end defaults to "now"
+			this.end = helper.getNow(event);
 		}
 		// verify input
 		verify();
+	}	
+	
+	public CustomQuery(MessageEvent<MyPircBotX> event, Report report) {
+		this.report 	= report;
+		this.channel 	= event.getChannel().getName();
+		this.event		= event;
 	}
+	
 	private void verify() {
 		QueryDAO qdao = new QueryDAOImpl();
 		if(!qdao.verifyUserHistory(this)){
@@ -87,4 +108,29 @@ public class CustomQuery {
 	public void setEnd(Timestamp end) {
 		this.end = end;
 	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	public int getTimeQuantity() {
+		return timeQuantity;
+	}
+
+	public void setTimeQuantity(int timeQuantity) {
+		this.timeQuantity = timeQuantity;
+	}
+
+	public String getTimePeriod() {
+		return timePeriod;
+	}
+
+	public void setTimePeriod(String timePeriod) {
+		this.timePeriod = timePeriod;
+	}
+	
 }

@@ -30,18 +30,18 @@ public class QueryListener extends ListenerAdapter<MyPircBotX> {
 	public void onMessage(final MessageEvent<MyPircBotX> event) {
 		// Big bad mega-query
 		if (event.getMessage().startsWith("!query")){
-			//QueryDAO query = new QueryDAOImpl();
 			CustomQuery myQueryConfig = new CustomQuery(event);
 			QueryDAO query = new QueryDAOImpl();
 			query.executeQuery(myQueryConfig);
-			//query.newGenericQuery(event);
 		}
+		// Word count - returns total usage of word
 		if (event.getMessage().startsWith("!wc")) {
 			QueryDAO query = new QueryDAOImpl();
 			event.respond("Word Count: "
 					+ query.getWordCount(event.getMessage().substring(4), event
 							.getChannel().getName()));
 		}
+		// Daily word count - counts usage of word for that day
 		if (event.getMessage().startsWith("!dwc")){
 			QueryDAO query = new QueryDAOImpl();
 			Timestamp now = helper.getNow(event);
@@ -51,13 +51,11 @@ public class QueryListener extends ListenerAdapter<MyPircBotX> {
 			event.respond("Daily Word Count (24 hrs): " + count);
 		}
 		if (event.getMessage().startsWith("!trending")){
-			int count = 5;
+//			helper.displayTrendingList(topWords,count,event);
+			// implement generic query, use this as an 'alias'
+			CustomQuery myQueryConfig = new CustomQuery(event,CustomQuery.Report.TRENDING);
 			QueryDAO query = new QueryDAOImpl();
-			Timestamp now = helper.getNow(event);
-			Timestamp yesterday = helper.getDaysAgo(event, 1);
-			String[][] topWords = 
-					query.getTopWords(count, event.getChannel().getName(), yesterday, now);
-			helper.displayTrendingList(topWords,count,event);
+			query.executeQuery(myQueryConfig);
 		}
 	}
 

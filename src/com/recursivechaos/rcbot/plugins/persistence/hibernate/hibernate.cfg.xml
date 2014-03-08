@@ -5,9 +5,9 @@
 <hibernate-configuration>
 	<session-factory>
         <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
-        <property name="hibernate.connection.password">pw</property>
-        <property name="hibernate.connection.url">jdbc:mysql://server</property>
-        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">Program!</property>
+        <property name="hibernate.connection.url">jdbc:mysql://box880.bluehost.com/recursi3_rcbot_db</property>
+        <property name="hibernate.connection.username">recursi3_botuser</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
     	<!-- Show SQL Queries for debugging -->
     	<property name="show_sql">true</property>

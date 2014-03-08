@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 import org.pircbotx.hooks.events.MessageEvent;
 
@@ -29,11 +28,13 @@ import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.EventLog;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.NickFilterGroup;
 
 public class QueryBO extends DAO{
-	public static final int SECOND = 1000;
-	public static final int MINUTE = 60 * SECOND;
-	public static final int HOUR = 60 * MINUTE;
-	public static final int DAY = 24 * HOUR;
-	public static long ONE_DAY = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
+	public static final long SECOND 	= TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS);
+	public static final long MINUTE 	= TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES);
+	public static final long HOUR 		= TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS);
+	public static final long DAY 		= TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
+	public static final long WEEK 		= 7 	* DAY;
+	public static final long MONTH		= 39	* DAY;
+	public static final long YEAR		= 365	* DAY;
 	/**
 	 * filterChannel returns records matching the channel filter.
 	 * 
@@ -212,7 +213,7 @@ public class QueryBO extends DAO{
 	}
 
 	public Timestamp getDaysAgo(MessageEvent<MyPircBotX> event, int i) {
-		return new Timestamp(event.getTimestamp()-(ONE_DAY*i));
+		return new Timestamp(event.getTimestamp()-(DAY*i));
 	}
 
 	public void displayTrendingList(String[][] topWords, int count,
@@ -262,5 +263,47 @@ public class QueryBO extends DAO{
 			close();
 		}
 		return results;
+	}
+
+	public Timestamp getPeriodsAgo(int timeQuantity, String timePeriod, MessageEvent<MyPircBotX> event) {
+		String search = stripTimePeriod(timePeriod);
+		switch(search){
+		case "hour":
+			return new Timestamp(event.getTimestamp()-(HOUR*timeQuantity));
+		case "day":
+			return new Timestamp(event.getTimestamp()-(DAY*timeQuantity));
+		case "week":
+			return new Timestamp(event.getTimestamp()-(WEEK*timeQuantity));
+		case "month":
+			return new Timestamp(event.getTimestamp()-(MONTH*timeQuantity));
+		case "year":
+			return new Timestamp(event.getTimestamp()-(YEAR*timeQuantity));
+		default:
+			return null;
+		}
+	}
+
+	/**
+	 * Sanitizes, and removes any tailing 's'
+	 * @param timePeriod
+	 * @return
+	 */
+	private String stripTimePeriod(String timePeriod) {
+		timePeriod = sanitize(timePeriod);
+		if(timePeriod.endsWith("s")){
+			timePeriod = timePeriod.substring(0, timePeriod.length()-1);
+		}
+		return timePeriod;
+	}
+	
+	/**
+	 * Removes start/end spaces, and forces lowercase
+	 * @param dirty, dirty input
+	 * @return squeaky clean output
+	 */
+	public String sanitize(String input) {
+		input = input.trim();
+		input = input.toLowerCase();
+		return input;
 	}
 }

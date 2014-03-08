@@ -15,7 +15,6 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
@@ -90,11 +89,11 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		// cut "!query"
 		input = input.substring(input.indexOf(" "));
 		// sanitize input (removes start/end spaces
-		input = sanitize(input);
+		input = helper.sanitize(input);
 		// get report name
 		// Bandaid, and a bad one at that.
 		input = input+ " ";
-		String report = sanitize(input.substring(0,input.indexOf(" ")+1));
+		String report = helper.sanitize(input.substring(0,input.indexOf(" ")+1));
 		
 		try{
 			REPORT_LIST reports = REPORT_LIST.valueOf(report.toUpperCase());
@@ -109,17 +108,6 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		}catch(Exception e){
 			//I'm not sure how I want to handle this yet
 		}
-	}
-
-	/**
-	 * Removes start/end spaces, and forces lowercase
-	 * @param dirty, dirty input
-	 * @return squeaky clean output
-	 */
-	private String sanitize(String input) {
-		input = input.trim();
-		input = input.toLowerCase();
-		return input;
 	}
 
 	@Override
@@ -147,14 +135,21 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 
 	@Override
 	public void executeQuery(CustomQuery myQueryConfig) {
-		int TEMP_DAYS = 1;
 		int TEMP_RECORDS = 5;
 		QueryBO helper = new QueryBO();
 		try{
 			Criteria c = getSession().createCriteria(EventLog.class);
 			// Add time restriction
+			// now *should* always be not null
 			Timestamp now = helper.getNow(myQueryConfig.getEvent());
-			Timestamp start = helper.getDaysAgo(myQueryConfig.getEvent(),TEMP_DAYS);
+			// Start on the other hand, may not be, default to 24 hours
+			Timestamp start = myQueryConfig.getStart();
+			if(start==null){
+				// set default to 24 hours
+				myQueryConfig.setStart(helper.getDaysAgo(myQueryConfig.getEvent(),1));
+				start = myQueryConfig.getStart();
+			}
+			//Timestamp start = helper.getDaysAgo(myQueryConfig.getEvent(),TEMP_DAYS);
 			c.add(Restrictions.between("sqltimestamp",start,now));
 			switch(myQueryConfig.getReport()) {
 			   case TRENDING:
@@ -168,7 +163,8 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 				   } else {
 					   response = response + " CHANNEL: " + myQueryConfig.getChannel();
 				   }
-				   response = response + " TIME: " + TEMP_DAYS + " days:";
+				   response = response + " TIME: " + myQueryConfig.getTimeQuantity() + " " 
+						   + myQueryConfig.getTimePeriod() + ":";
 				   //response = response + " TOP "  + TEMP_RECORDS + ": ";
 				   
 				   // Run the query

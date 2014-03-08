@@ -13,8 +13,8 @@
 		<catfacts>false</catfacts>
 		<dadjokes>false</dadjokes>
 		<dadjokechance>1</dadjokechance>
-		<logger>false</logger>
-		<admin>username</admin>
+		<logger>true</logger>
+		<admin>recursivechaos</admin>
 		<rcrover>false</rcrover>
 	</bot>
 	<!--  
