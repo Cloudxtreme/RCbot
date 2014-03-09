@@ -6,41 +6,66 @@ package com.recursivechaos.rcbot.plugins.redditPreview;
  * 
  * @author Andrew Bell www.recursivechaos.com
  */
-import static java.util.Arrays.asList;
-
-import java.util.Iterator;
-import java.util.List;
-
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.recursivechaos.rcbot.plugins.admin.SettingsBO;
+import com.recursivechaos.rcbot.bot.object.BotException;
+import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 
-@SuppressWarnings("rawtypes")
-public class RedditPreviewListener extends ListenerAdapter {
-	// static final String[] ignoredUsers = ;
-	static final List<String> ignoredUsers = asList("dtbot", "dsbot",
-			"dolemite7", "testStoop");
-	// Start logger
+public class RedditPreviewListener extends ListenerAdapter<MyPircBotX> {
 	Logger logger = LoggerFactory.getLogger(RedditPreviewListener.class);
-	SettingsBO mySettings = new SettingsBO();
+	
+	public void onMessage(final MessageEvent<MyPircBotX> event) {
+		String message = event.getMessage();
+		String user = event.getUser().getNick();
+		if(isValid(message)&&isValidUser(user)){
+			RedditPreview rurl;
+			try {
+				rurl = new RedditPreview(message);
+				if(rurl!=null){
+					event.getBot().sendIRC().message(event.getChannel().getName(),rurl.getPreview());
+				}
+			} catch (BotException e) {
+				event.getBot().sendIRC().message(event.getBot().getSettings().getAdmin(),
+						"I have failed to parse json for " + event.getMessage());
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/**
-	 * Checks if the event contains a valid URL. This is a function, rather than
-	 * in the BO, because I don't want to have to create the BO on EVERY event.
-	 * 
-	 * @param event
-	 *            event object to check for url
-	 * @return true if url is found in the event message
+	 * Checks against banned user list, current in the string array below. Needs to be updated
+	 * to remove hard coding
+	 * @param user user to check if not on ban list
+	 * @return	if user is not on ban list, true
 	 */
-	private boolean hasValidURL(MessageEvent event) {
-		final String[] validURLs = { "http://", "www.", "reddit.com/",
-				"redd.it/" };
+	private boolean isValidUser(String user) {
+		// This doesn't really translate well to the 'universal' concept of the bot, I need to 
+		// implement an 'ignored user' file to read from
+		final String[] bannedUsers = { "dtbot","dlbot","dsbot"};
+		boolean validUser = true;
+		user = user.toLowerCase();
+		// search message for URL
+		for (String u : bannedUsers) {
+			if (user.contains(u)) {
+				validUser = false;
+				logger.info("baned user found");
+			}
+		}
+		return validUser;
+	}
+
+	/**
+	 * Checks to see if this is a url that the listener can handle
+	 * @param message raw message from event
+	 * @return true if contains a valid url
+	 */
+	private boolean isValid(String message) {
+		final String[] validURLs = { "reddit.com/","redd.it/" };
 		boolean validURL = false;
-		// get message text
-		String message = event.getMessage().toLowerCase();
+		message =message.toLowerCase();
 		// search message for URL
 		for (String u : validURLs) {
 			if (message.contains(u)) {
@@ -49,35 +74,5 @@ public class RedditPreviewListener extends ListenerAdapter {
 			}
 		}
 		return validURL;
-	}
-
-	private boolean isApprovedUser(MessageEvent event) {
-		boolean flag = true;
-		Iterator itr = ignoredUsers.iterator();
-		while (itr.hasNext()) {
-			String user = event.getUser().getNick().toLowerCase();
-			String banned = itr.next().toString().toLowerCase();
-			if (user.equals(banned)) {
-				flag = false;
-			}
-		}
-		return flag;
-	}
-
-	@Override
-	public void onMessage(final MessageEvent event) {
-		if (isApprovedUser(event)) {
-			if (hasValidURL(event)) {
-				UrlBO url = new UrlBO();
-				String reply = url.getAnnouncement(event);
-				if (!reply.isEmpty()) {
-					// event.respond(reply);
-					event.getBot()
-							.sendIRC()
-							.message(event.getChannel().getName().toString(),
-									reply);
-				}
-			}
-		}
 	}
 }
