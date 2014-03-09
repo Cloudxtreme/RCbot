@@ -1,14 +1,23 @@
 package com.recursivechaos.rcbot.bot.bo;
 
 /**
- * ConfigFactory loads the configuration settings from file, and then 
- * creates a Configuration object for the pircbotx object.
+ * ConfigFactory loads the configuration settings from the config.xml file located on the build
+ * path. It will read the XML, and create a configuration object that PircBotX can then used to
+ * create and run mulitple bots at once. In getXMLConfig, listeners for the various plugins are
+ * attached, and if a new pluigin is added, this must be added to know to look for, and attach
+ * the new listener.
  * 
  * @author Andrew Bell www.recursivechaos.com
  */
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.pircbotx.Configuration;
 import org.pircbotx.Configuration.Builder;
 import org.pircbotx.PircBotX;
@@ -34,10 +43,17 @@ import com.recursivechaos.rcbot.plugins.stoopsnoop.QueryListener;
 public class ConfigFactory {
 	// Start logger
 	Logger logger = LoggerFactory.getLogger(ConfigFactory.class);
+	List<Settings> settingsList = new ArrayList<Settings>();
 
+	/**
+	 * getXMLConfig will then take the settings from the XML, and then 
+	 * attach listeners to the new bot objects based on the XML settings.
+	 * @param botSettings
+	 * @return Configuration<? extends PircBotX> configuration file for PircBotX to create.
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Configuration<? extends PircBotX> getXMLConfig(Settings botSettings) {
-		// Create bulider
+		// Create builder
 		Builder myBuilder = new Configuration.Builder();
 		Settings mySettings = botSettings;
 		// Add generics to builder
@@ -87,14 +103,19 @@ public class ConfigFactory {
 		return myConfiguration;
 	}
 
+	/**
+	 * Loads settings from XML, and then creates as many bots as
+	 * needed, as determined by the xml
+	 * @return List<MyPircBotX> list of bot objects
+	 */
 	public List<MyPircBotX> loadBotsFromXML() {
 		List<MyPircBotX> myBots = new ArrayList<MyPircBotX>();
 		// Load initial config from XML
-		ConfigBO config = new ConfigBO("config.xml");
-		for (int i = 0; i < config.getTotalBots(); i++) {
+		readXML("config.xml");
+		for (int i = 0; i < getTotalBots(); i++) {
 			// Create settings object
 			// Load settings from XML
-			Settings botSettings = config.getBotSettings(i);
+			Settings botSettings = getBotSettings(i);
 			// Create myBot object
 			// Attach settings to bot
 			MyPircBotX myBot = new MyPircBotX(getXMLConfig(botSettings),
@@ -103,7 +124,71 @@ public class ConfigFactory {
 			myBots.add(myBot);
 		}
 		// Return list
-
 		return myBots;
 	}
+
+	/**
+	 * Reads XML file provided, and adds to bot settings
+	 * @param fileURL
+	 */
+	private void readXML(String fileURL) {
+		SAXBuilder builder = new SAXBuilder();
+		File xmlFile = new File(fileURL);
+		try {
+			Document document = builder.build(xmlFile);
+			Element rootNode = document.getRootElement();
+			List<?> list = rootNode.getChildren("bot");
+			for (int i = 0; i < list.size(); i++) {
+				Element node = (Element) list.get(i);
+				Settings botSettings = new Settings();
+				botSettings.setNick(node.getChildText("nick"));
+				botSettings.setPassword(node.getChildText("password"));
+				botSettings.setServer(node.getChildText("server"));
+				botSettings.setChannel(node.getChildText("channel"));
+				botSettings.setRedditPreview(Boolean.valueOf(node
+						.getChildText("redditpreview")));
+				botSettings.setNewUserGreeting(Boolean.valueOf(node
+						.getChildText("newusergreeting")));
+				botSettings.setCalendar(Boolean.valueOf(node
+						.getChildText("calendar")));
+				botSettings.setCalendarUrl((node.getChildText("calendarurl")));
+				botSettings
+						.setDice(Boolean.valueOf((node.getChildText("dice"))));
+				botSettings.setCatfacts(Boolean.valueOf((node
+						.getChildText("catfacts"))));
+				botSettings.setDadjokes(Boolean.valueOf((node
+						.getChildText("dadjokes"))));
+				botSettings.setDadjokeChance(Integer.parseInt((node
+						.getChildText("dadjokechance"))));
+				botSettings.setLogger(Boolean.valueOf((node
+						.getChildText("logger"))));
+				botSettings.setAdmin(node.getChildText("admin"));
+				botSettings.setRcrover(Boolean.valueOf((node
+						.getChildText("rcrover"))));
+				settingsList.add(botSettings);
+			}
+		} catch (IOException io) {
+			System.out.println(io.getMessage());
+		} catch (JDOMException jdomex) {
+			System.out.println(jdomex.getMessage());
+		}
+	}
+	
+	/**
+	 * Returns a particular botSettings object
+	 * @param i	index
+	 * @return	bot settings for that index
+	 */
+	private Settings getBotSettings(int i) {
+		return settingsList.get(i);
+	}
+
+	/**
+	 * Returns amount of bots called for
+	 * @return total bots
+	 */
+	private int getTotalBots() {
+		return settingsList.size();
+	}
+	
 }

@@ -6,7 +6,6 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import com.recursivechaos.rcbot.bot.object.MyPircBotX;
 import com.recursivechaos.rcbot.plugins.persistence.hibernate.dao.QueryDAOImpl;
-import com.recursivechaos.rcbot.plugins.stoopsnoop.objects.CustomQuery.Report;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryBO;
 import com.recursivechaos.rcbot.plugins.stoopsnoop.query.QueryDAO;
 
@@ -20,6 +19,7 @@ public class CustomQuery {
 	Timestamp end;
 	int timeQuantity;
 	String timePeriod;
+	int resultsQuantity;
 	
 	
 	public CustomQuery(MessageEvent<MyPircBotX> event) {
@@ -52,6 +52,10 @@ public class CustomQuery {
 			}
 			// Time end defaults to "now"
 			this.end = helper.getNow(event);
+			// Get quantity
+			if (test.equals("-q")){
+				this.resultsQuantity = Integer.parseInt(inArray[i+1]);
+			}
 		}
 		// verify input
 		verify();
@@ -61,6 +65,10 @@ public class CustomQuery {
 		this.report 	= report;
 		this.channel 	= event.getChannel().getName();
 		this.event		= event;
+		this.resultsQuantity = 5;
+		this.timePeriod = "hour";
+		this.timeQuantity = 24;
+		
 	}
 	
 	private void verify() {
@@ -131,6 +139,14 @@ public class CustomQuery {
 
 	public void setTimePeriod(String timePeriod) {
 		this.timePeriod = timePeriod;
+	}
+
+	public int getResultsQuantity() {
+		return resultsQuantity;
+	}
+
+	public void setResultsQuantity(int resultsQuantity) {
+		this.resultsQuantity = resultsQuantity;
 	}
 	
 }

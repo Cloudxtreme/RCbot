@@ -135,7 +135,6 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 
 	@Override
 	public void executeQuery(CustomQuery myQueryConfig) {
-		int TEMP_RECORDS = 5;
 		QueryBO helper = new QueryBO();
 		try{
 			Criteria c = getSession().createCriteria(EventLog.class);
@@ -148,6 +147,8 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 				// set default to 24 hours
 				myQueryConfig.setStart(helper.getDaysAgo(myQueryConfig.getEvent(),1));
 				start = myQueryConfig.getStart();
+				myQueryConfig.setTimePeriod("hour");
+				myQueryConfig.setTimeQuantity(24);
 			}
 			//Timestamp start = helper.getDaysAgo(myQueryConfig.getEvent(),TEMP_DAYS);
 			c.add(Restrictions.between("sqltimestamp",start,now));
@@ -174,9 +175,9 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 				   HashMap<String, Integer> wordMap = QueryBO.getWordMap(list);
 				   wordMap = QueryBO.removeIgnoredWords(wordMap);
 				   wordMap = QueryBO.removeNicks(wordMap,myQueryConfig.getChannel());
-				   String[][] topList = QueryBO.getTop(TEMP_RECORDS,wordMap);
+				   String[][] topList = QueryBO.getTop(myQueryConfig.getResultsQuantity(),wordMap);
 				   // Add records
-				   for (int i = 0; i<TEMP_RECORDS;i++){
+				   for (int i = 0; i<myQueryConfig.getResultsQuantity();i++){
 						//response = response + (topList[i][0] + "-" + topList[i][1]+ " ");
 					   response = response + " " + (i+1) + ")" + topList[i][0] + "[" + topList[i][1] + "]";
 					}
@@ -194,7 +195,6 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 		}finally{
 			close();
 		}
-		
 	}
 
 	@SuppressWarnings("unchecked")

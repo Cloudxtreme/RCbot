@@ -128,10 +128,20 @@ public class QueryBO extends DAO{
         		 word = removePunctuation(word,"(");
         		 word = removePunctuation(word,":");
         		 word = removePunctuation(word,"*");
-                 if(!listOfWords.containsKey(word))
-                 {                             //add word if it isn't added already
+                 
+                 // Checks for plural words, and will add them under the non-plural form if available
+                 // Will not work if the singular form is not in the hashmap yet, so is
+                 // not accurate.
+                 if((word.endsWith("s"))&&(listOfWords.containsKey(word.substring(0,word.length()-1))))
+                 {
+                	 String unplural = word.substring(0,word.length()-1);
+                     countWord = listOfWords.get(unplural) + 1; //get current count and increment
+                     //now put the new value back in the HashMap
+                     listOfWords.remove(unplural); //first remove it (can't have duplicate keys)
+                     listOfWords.put(unplural, countWord); //now put it back with new value
+                 }else if(!listOfWords.containsKey(word)){//add word if it isn't added already
                 	 if (!word.isEmpty()){
-                		 listOfWords.put(word, 1); //first occurance of this word
+                		 listOfWords.put(word, 1); //first occurrence of this word
                 	 }
                  }
                  else
