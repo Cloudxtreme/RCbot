@@ -150,6 +150,10 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 				myQueryConfig.setTimePeriod("hour");
 				myQueryConfig.setTimeQuantity(24);
 			}
+			// default to results 5
+			if(myQueryConfig.getResultsQuantity()<1){
+				myQueryConfig.setResultsQuantity(5);
+			}
 			//Timestamp start = helper.getDaysAgo(myQueryConfig.getEvent(),TEMP_DAYS);
 			c.add(Restrictions.between("sqltimestamp",start,now));
 			switch(myQueryConfig.getReport()) {
