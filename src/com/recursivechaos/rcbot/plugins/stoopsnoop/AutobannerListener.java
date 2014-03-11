@@ -19,6 +19,7 @@ public class AutobannerListener extends ListenerAdapter<MyPircBotX> {
 
 	public void onMessage(final MessageEvent<MyPircBotX> event) throws Exception {
 		String admin = event.getBot().getSettings().getAdmin();
+
 		AutobannerDAO banhammer = new AutobannerDAOImpl();
 		if(banhammer.isFloodSpam(event)){
 			banhammer.banUser(event,"Flooding.",24);

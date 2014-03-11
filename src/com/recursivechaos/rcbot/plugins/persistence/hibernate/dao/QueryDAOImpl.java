@@ -226,12 +226,13 @@ public class QueryDAOImpl extends DAO implements QueryDAO {
 			Criteria c = getSession().createCriteria(EventLog.class);
 			c.add(Restrictions.like("channel", event.getChannel().getName()));
 			c.add(Restrictions.like("nick", event.getUser().getNick()));
-			c.add(Restrictions.gt("sqltimestamp", (event.getTimestamp()-QueryBO.HOUR)));
+			Timestamp start = new Timestamp(event.getTimestamp()-QueryBO.HOUR);
+			c.add(Restrictions.gt("sqltimestamp", (start)));
 			c.addOrder(Order.desc("sqltimestamp"));
-			c.setMaxResults(qty);
+			c.setMaxResults(qty+1);//We need to see if there's *more* than the threshold
 			results = c.list();
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}finally{
 			close();
 		}
