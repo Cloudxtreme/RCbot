@@ -90,10 +90,10 @@ public class AutobannerDAOImpl extends DAO implements AutobannerDAO{
 	}
 
 	@Override
-	public void banUser(MessageEvent<MyPircBotX> event, String note, int hours) throws BotException {
+	public void banUser(MessageEvent<MyPircBotX> event, String note) throws BotException {
 		QueryBO helper = new QueryBO();
-		Timestamp start = helper.getNow(event);
-		Timestamp end = helper.getHoursFromNow(event,hours);
+		Timestamp start = new Timestamp(helper.getNow(event).getTime()-900000);//15 mins
+		Timestamp end = helper.getHoursFromNow(event,1);
 		
 		// Run by query restrictions, instead of by example
 		// By example appears to be giving me issues with the generated PK
@@ -103,7 +103,7 @@ public class AutobannerDAOImpl extends DAO implements AutobannerDAO{
 			c.add(Restrictions.like("channel", event.getChannel().getName()));
 			c.add(Restrictions.lt("end",end));
 			// Checks to see if history, and then bans
-			List results = c.list();
+			List<?> results = c.list();
 			// If ban in effect, don't add another
 			if(results.isEmpty()){
 				// set rest of ban
@@ -113,7 +113,7 @@ public class AutobannerDAOImpl extends DAO implements AutobannerDAO{
 				ban.setNickFilterName("Spammer");
 				ban.setEnd(end);
 				ban.setStart(start);
-				ban.setNote(note);
+				ban.setNote(note + " with message: " + event.getMessage());
 				// commit
 				begin();
 				getSession().save(ban);

@@ -29,7 +29,7 @@ public interface AutobannerDAO {
 	 * @param hours	how long to ban
 	 * @throws BotException On error saving to db 
 	 */
-	void banUser(MessageEvent<MyPircBotX> event, String note, int hours) throws BotException ;
+	void banUser(MessageEvent<MyPircBotX> event, String note) throws BotException ;
 
 	/**
 	 * isBulk spam checks the message contents for over-use of a word. Will check against list

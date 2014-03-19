@@ -22,13 +22,13 @@ public class AutobannerListener extends ListenerAdapter<MyPircBotX> {
 
 		AutobannerDAO banhammer = new AutobannerDAOImpl();
 		if(banhammer.isFloodSpam(event)){
-			banhammer.banUser(event,"Flooding.",24);
+			banhammer.banUser(event,"Flooding.");
 			//event.respond("I'm telling (Flooding)");
 			event.getBot().sendIRC().message(admin, event.getUser().getNick() 
 					+ " is flood spamming in " + event.getChannel().getName() + " with line "+
 					event.getMessage());
 		}else if(banhammer.isBulkSpam(event)){
-			banhammer.banUser(event,"Bulk Spam.",24);
+			banhammer.banUser(event,"Bulk Spam.");
 			//event.respond("I'm telling (Bulk)");
 			event.getBot().sendIRC().message(admin, event.getUser().getNick() 
 					+ " is bulk spamming in " + event.getChannel().getName() + " with line "+

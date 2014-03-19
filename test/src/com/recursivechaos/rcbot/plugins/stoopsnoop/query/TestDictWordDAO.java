@@ -13,9 +13,11 @@ public class TestDictWordDAO extends TestCase{
 	public void test() {
 		QueryDAO q = new QueryDAOImpl();
 		Timestamp end = new Timestamp(System.currentTimeMillis());
-		Timestamp start = new Timestamp(end.getTime()-(ONE_DAY*5));
-		String[][] resp = q.getTopWords(25, "#reddit-stlouis", start, end);
+		Timestamp start = new Timestamp(end.getTime()-(ONE_DAY));
+		String[][] resp = q.getTopWords(10, "#reddit-stlouis", start, end);
 		assertNotNull(resp);
 	}
+	
+
 
 }
